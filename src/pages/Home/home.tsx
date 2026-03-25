@@ -4,47 +4,96 @@ type LangKey = "en" | "zh" | "km";
 
 const languages: { code: LangKey; label: string; flag: string }[] = [
   { code: "en", label: "English", flag: "🇺🇸" },
-  { code: "zh", label: "中文",     flag: "🇨🇳" },
-  { code: "km", label: "ខ្មែរ",    flag: "🇰🇭" },
+  { code: "zh", label: "中文", flag: "🇨🇳" },
+  { code: "km", label: "ខ្មែរ", flag: "🇰🇭" },
 ];
 
-const t: Record<LangKey, {
-  eyebrow: string; heroTitle: string; heroEm: string; heroSub: string;
-  exploreOptions: string; contactSupport: string; quoteTitle: string; quoteSub: string;
-  signIn: string; getStarted: string;
-  nav: { products: string; gallery: string; pricing: string; about: string };
-  cats: string[];
-}> = {
+const t: Record<
+  LangKey,
+  {
+    eyebrow: string;
+    heroTitle: string;
+    heroEm: string;
+    heroSub: string;
+    exploreOptions: string;
+    contactSupport: string;
+    quoteTitle: string;
+    quoteSub: string;
+    signIn: string;
+    getStarted: string;
+    nav: { products: string; gallery: string; pricing: string; about: string };
+    cats: string[];
+  }
+> = {
   en: {
-    eyebrow: "Inspiration Gallery", heroTitle: "Discover printing solutions for your", heroEm: "next big project",
-    heroSub: "Browse our curated collection of premium print products — from banners to business cards.",
-    exploreOptions: "Explore options →", contactSupport: "Contact Support",
-    quoteTitle: "Need a Custom Quote?", quoteSub: "Can't find what you're looking for? We handle custom projects of all sizes.",
-    signIn: "Sign in", getStarted: "Get Started",
-    nav: { products: "Products", gallery: "Gallery", pricing: "Pricing", about: "About" },
+    eyebrow: "Inspiration Gallery",
+    heroTitle: "Discover printing solutions for your",
+    heroEm: "next big project",
+    heroSub:
+      "Browse our curated collection of premium print products — from banners to business cards.",
+    exploreOptions: "Explore options →",
+    contactSupport: "Contact Support",
+    quoteTitle: "Need a Custom Quote?",
+    quoteSub:
+      "Can't find what you're looking for? We handle custom projects of all sizes.",
+    signIn: "Sign in",
+    getStarted: "Get Started",
+    nav: {
+      products: "Products",
+      gallery: "Gallery",
+      pricing: "Pricing",
+      about: "About",
+    },
     cats: ["Banners", "Stickers", "Business Cards", "Posters", "Flyers"],
   },
   zh: {
-    eyebrow: "灵感画廊", heroTitle: "发现适合您的印刷解决方案", heroEm: "下一个大项目",
+    eyebrow: "灵感画廊",
+    heroTitle: "发现适合您的印刷解决方案",
+    heroEm: "下一个大项目",
     heroSub: "浏览我们精心策划的优质印刷产品系列——从横幅到名片。",
-    exploreOptions: "探索选项 →", contactSupport: "联系支持",
-    quoteTitle: "需要定制报价？", quoteSub: "找不到您需要的产品？我们承接各种规模的定制项目。",
-    signIn: "登录", getStarted: "开始使用",
-    nav: { products: "产品", gallery: "画廊", pricing: "定价", about: "关于我们" },
+    exploreOptions: "探索选项 →",
+    contactSupport: "联系支持",
+    quoteTitle: "需要定制报价？",
+    quoteSub: "找不到您需要的产品？我们承接各种规模的定制项目。",
+    signIn: "登录",
+    getStarted: "开始使用",
+    nav: {
+      products: "产品",
+      gallery: "画廊",
+      pricing: "定价",
+      about: "关于我们",
+    },
     cats: ["横幅", "贴纸", "名片", "海报", "传单"],
   },
   km: {
-    eyebrow: "វិចិត្រសាលការបំផុស", heroTitle: "រកឃើញដំណោះស្រាយការបោះពុម្ពសម្រាប់", heroEm: "គម្រោងធំបន្ទាប់របស់អ្នក",
+    eyebrow: "វិចិត្រសាលការបំផុស",
+    heroTitle: "រកឃើញដំណោះស្រាយការបោះពុម្ពសម្រាប់",
+    heroEm: "គម្រោងធំបន្ទាប់របស់អ្នក",
     heroSub: "រកមើលបណ្តុំផលិតផលបោះពុម្ពប្រណីតរបស់យើង — ពីបដារហូតដល់នាមប័ណ្ណ។",
-    exploreOptions: "ស្វែងរកជម្រើស →", contactSupport: "ទំនាក់ទំនងការគាំទ្រ",
-    quoteTitle: "ត្រូវការតម្លៃផ្ទាល់ខ្លួន?", quoteSub: "រក​មិន​ឃើញ​អ្វី​ដែល​អ្នក​ចង់​បាន? យើង​ដោះស្រាយ​គម្រោង​ផ្ទាល់ខ្លួន​គ្រប់​ទំហំ។",
-    signIn: "ចូល", getStarted: "ចាប់ផ្ដើម",
-    nav: { products: "ផលិតផល", gallery: "វិចិត្រសាល", pricing: "តម្លៃ", about: "អំពីយើង" },
+    exploreOptions: "ស្វែងរកជម្រើស →",
+    contactSupport: "ទំនាក់ទំនងការគាំទ្រ",
+    quoteTitle: "ត្រូវការតម្លៃផ្ទាល់ខ្លួន?",
+    quoteSub:
+      "រក​មិន​ឃើញ​អ្វី​ដែល​អ្នក​ចង់​បាន? យើង​ដោះស្រាយ​គម្រោង​ផ្ទាល់ខ្លួន​គ្រប់​ទំហំ។",
+    signIn: "ចូល",
+    getStarted: "ចាប់ផ្ដើម",
+    nav: {
+      products: "ផលិតផល",
+      gallery: "វិចិត្រសាល",
+      pricing: "តម្លៃ",
+      about: "អំពីយើង",
+    },
     cats: ["បដា", "ស្ទីករ", "នាមប័ណ្ណ", "ផូស្ទែរ", "ត្រាចែកចាយ"],
   },
 };
 
-const categories = ["Banners", "Stickers", "Business Cards", "Posters", "Flyers"];
+const categories = [
+  "Banners",
+  "Stickers",
+  "Business Cards",
+  "Posters",
+  "Flyers",
+];
 
 const products = [
   {
@@ -53,7 +102,8 @@ const products = [
     tagColor: "#10b981",
     title: "Vinyl Outdoor Banners",
     subtitle: "Weather-resistant printing solutions",
-    image: "https://images.unsplash.com/photo-1588681664899-f142ff2dc9b1?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1588681664899-f142ff2dc9b1?w=600&q=80",
     category: "Banners",
   },
   {
@@ -62,7 +112,8 @@ const products = [
     tagColor: "#6366f1",
     title: "Branding Stickers",
     subtitle: "Custom die-cut stickers for Glass",
-    image: "https://images.unsplash.com/photo-1572375992501-4b0892d50c69?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1572375992501-4b0892d50c69?w=600&q=80",
     category: "Stickers",
   },
   {
@@ -71,7 +122,8 @@ const products = [
     tagColor: "#f59e0b",
     title: "Premium Business Cards",
     subtitle: "Luxury finishes and Matte/Gloss Stock",
-    image: "https://images.unsplash.com/photo-1586282023338-52aa31c63327?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1586282023338-52aa31c63327?w=600&q=80",
     category: "Business Cards",
   },
   {
@@ -80,7 +132,8 @@ const products = [
     tagColor: "#ef4444",
     title: "Event Posters",
     subtitle: "Vibrant colors and sharp details",
-    image: "https://images.unsplash.com/photo-1561736778-92e52a7769ef?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1561736778-92e52a7769ef?w=600&q=80",
     category: "Posters",
   },
   {
@@ -89,7 +142,8 @@ const products = [
     tagColor: "#06b6d4",
     title: "Promotional Flyers",
     subtitle: "Bold designs for maximum impact",
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80",
     category: "Flyers",
   },
   {
@@ -98,7 +152,8 @@ const products = [
     tagColor: "#10b981",
     title: "Roll-Up Banners",
     subtitle: "Portable displays for events & trade shows",
-    image: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&q=80",
+    image:
+      "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&q=80",
     category: "Banners",
   },
 ];
@@ -352,9 +407,13 @@ export default function InspirationGallery() {
   }, []);
 
   // Reset active category when language changes
-  useEffect(() => { setActiveCategory(0); }, [lang]);
+  useEffect(() => {
+    setActiveCategory(0);
+  }, [lang]);
 
-  const filtered = products.filter((p) => p.category === categories[activeCategory]);
+  const filtered = products.filter(
+    (p) => p.category === categories[activeCategory],
+  );
 
   return (
     <div>
@@ -366,16 +425,30 @@ export default function InspirationGallery() {
           <a className="nav-logo" href="#">
             <div className="nav-logo-dot">
               <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path
+                  d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
+                  stroke="#fff"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             </div>
             PrintCraft
           </a>
           <ul className="nav-links">
-            <li><a href="#">{tx.nav.products}</a></li>
-            <li><a href="#">{tx.nav.gallery}</a></li>
-            <li><a href="#">{tx.nav.pricing}</a></li>
-            <li><a href="#">{tx.nav.about}</a></li>
+            <li>
+              <a href="#">{tx.nav.products}</a>
+            </li>
+            <li>
+              <a href="#">{tx.nav.gallery}</a>
+            </li>
+            <li>
+              <a href="#">{tx.nav.pricing}</a>
+            </li>
+            <li>
+              <a href="#">{tx.nav.about}</a>
+            </li>
           </ul>
           <div className="nav-actions">
             <button className="btn-ghost">{tx.signIn}</button>
@@ -390,7 +463,13 @@ export default function InspirationGallery() {
                 <span className="lang-flag">{currentLang.flag}</span>
                 <span>{currentLang.label}</span>
                 <svg width="12" height="12" fill="none" viewBox="0 0 24 24">
-                  <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path
+                    d="M6 9l6 6 6-6"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
               </button>
               {langOpen && (
@@ -399,7 +478,10 @@ export default function InspirationGallery() {
                     <button
                       key={l.code}
                       className={`lang-option${lang === l.code ? " selected" : ""}`}
-                      onClick={() => { setLang(l.code); setLangOpen(false); }}
+                      onClick={() => {
+                        setLang(l.code);
+                        setLangOpen(false);
+                      }}
                     >
                       <span>{l.flag}</span>
                       <span>{l.label}</span>
@@ -412,7 +494,12 @@ export default function InspirationGallery() {
             <button className="btn-primary">{tx.getStarted}</button>
             <button className="nav-mobile-btn" aria-label="Menu">
               <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-                <path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                <path
+                  d="M3 12h18M3 6h18M3 18h18"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
               </svg>
             </button>
           </div>
@@ -421,7 +508,9 @@ export default function InspirationGallery() {
 
       {/* HERO */}
       <section className="hero">
-        <div className="hero-eyebrow"><span>✦</span> {tx.eyebrow}</div>
+        <div className="hero-eyebrow">
+          <span>✦</span> {tx.eyebrow}
+        </div>
         <h1 className="hero-title">
           {tx.heroTitle} <em>{tx.heroEm}</em>
         </h1>
@@ -450,12 +539,21 @@ export default function InspirationGallery() {
             <div key={product.id} className="card">
               <div className="card-img-wrap">
                 <img src={product.image} alt={product.title} loading="lazy" />
-                <span className="card-tag" style={{ background: product.tagColor }}>
+                <span
+                  className="card-tag"
+                  style={{ background: product.tagColor }}
+                >
                   {product.tag}
                 </span>
                 <div className="card-arrow">
                   <svg width="14" height="14" fill="none" viewBox="0 0 24 24">
-                    <path d="M5 12h14M12 5l7 7-7 7" stroke="#111" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path
+                      d="M5 12h14M12 5l7 7-7 7"
+                      stroke="#111"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 </div>
               </div>
@@ -465,7 +563,13 @@ export default function InspirationGallery() {
                 <div className="card-footer">
                   <span className="card-cta">{tx.exploreOptions}</span>
                   <svg className="card-icon" fill="none" viewBox="0 0 24 24">
-                    <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path
+                      d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 </div>
               </div>

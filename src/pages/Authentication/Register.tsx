@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { User, Phone, Mail, Lock, EyeOff, Eye, Loader2 } from "lucide-react";
 
 const Register: React.FC = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +25,6 @@ const Register: React.FC = () => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    setSuccess(false);
 
     try {
       const response = await fetch("/api/auth/register", {
@@ -31,26 +32,24 @@ const Register: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          fullName: formData.fullName,
-          username: formData.username,
-          phone: formData.phone,
-          email: formData.email,
-          password: formData.password,
-        }),
+        body: JSON.stringify(formData),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        // Use server error message if available, otherwise fallback
-        throw new Error(data.message || "Registration failed. Please try again.");
+        throw new Error(data.message || "Registration failed");
       }
 
+      // SUCCESS
       setSuccess(true);
-      setFormData({ fullName: "", username: "", phone: "", email: "", password: "" });
+
+      // redirect to home page
+      setTimeout(() => {
+        navigate("/home");
+      }, 1000);
     } catch (err: any) {
-      setError(err.message || "Something went wrong. Please try again.");
+      setError(err.message || "Something went wrong");
     } finally {
       setLoading(false);
     }

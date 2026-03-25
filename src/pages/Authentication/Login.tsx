@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Mail, Lock, EyeOff, Eye, Loader2 } from "lucide-react";
 
 const Login: React.FC = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -38,13 +40,12 @@ const Login: React.FC = () => {
         throw new Error(data.message || "Login failed. Please try again.");
       }
 
-      // Save token if returned (adjust key based on your API response)
       if (data.token) {
         localStorage.setItem("token", data.token);
       }
 
-      // Redirect after successful login
-      window.location.href = "/dashboard";
+      // ✅ Navigate to home/dashboard
+      navigate("/home");
     } catch (err: any) {
       setError(err.message || "Something went wrong. Please try again.");
     } finally {

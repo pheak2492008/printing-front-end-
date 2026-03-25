@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { User, Phone, Mail, Lock, EyeOff, Eye } from "lucide-react";
+import { User, Phone, Mail, Lock, EyeOff, Eye, Loader2 } from "lucide-react";
 
 const Register: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     username: "",
@@ -13,6 +16,44 @@ const Register: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setError(null); // clear error on input change
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
+
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullName: formData.fullName,
+          username: formData.username,
+          phone: formData.phone,
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        // Use server error message if available, otherwise fallback
+        throw new Error(data.message || "Registration failed. Please try again.");
+      }
+
+      setSuccess(true);
+      setFormData({ fullName: "", username: "", phone: "", email: "", password: "" });
+    } catch (err: any) {
+      setError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const inputClass =
@@ -21,7 +62,7 @@ const Register: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-white rounded-[2.5rem] overflow-hidden shadow-xl">
-        {/* Dark Header Section */}
+        {/* Header Section */}
         <div className="bg-[#22d3ee] p-10 pb-14 text-white relative overflow-hidden">
           <h1 className="text-3xl font-serif font-semibold relative z-10">
             Register an account
@@ -37,7 +78,25 @@ const Register: React.FC = () => {
             Sign Up
           </h2>
 
-          <form className="space-y-4">
+          {/* Success Message */}
+          {success && (
+            <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-xl text-green-600 text-sm text-center">
+              🎉 Account created successfully! You can now{" "}
+              <a href="/login" className="font-bold underline">
+                login
+              </a>
+              .
+            </div>
+          )}
+
+          {/* Error Message */}
+          {error && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-red-500 text-sm text-center">
+              {error}
+            </div>
+          )}
+
+          <form className="space-y-4" onSubmit={handleSubmit}>
             {/* Full Name */}
             <div className="relative">
               <User className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-400 w-5 h-5" />
@@ -46,7 +105,9 @@ const Register: React.FC = () => {
                 type="text"
                 placeholder="Full name"
                 className={inputClass}
+                value={formData.fullName}
                 onChange={handleChange}
+                required
               />
             </div>
 
@@ -58,7 +119,9 @@ const Register: React.FC = () => {
                 type="text"
                 placeholder="Username"
                 className={inputClass}
+                value={formData.username}
                 onChange={handleChange}
+                required
               />
             </div>
 
@@ -70,7 +133,9 @@ const Register: React.FC = () => {
                 type="tel"
                 placeholder="Phone"
                 className={inputClass}
+                value={formData.phone}
                 onChange={handleChange}
+                required
               />
             </div>
 
@@ -82,7 +147,9 @@ const Register: React.FC = () => {
                 type="email"
                 placeholder="Email"
                 className={inputClass}
+                value={formData.email}
                 onChange={handleChange}
+                required
               />
             </div>
 
@@ -94,7 +161,9 @@ const Register: React.FC = () => {
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 className={inputClass}
+                value={formData.password}
                 onChange={handleChange}
+                required
               />
               <button
                 type="button"
@@ -105,8 +174,19 @@ const Register: React.FC = () => {
               </button>
             </div>
 
-            <button className="w-full bg-[#22d3ee] hover:bg-cyan-500 text-white font-bold py-4 rounded-2xl shadow-lg shadow-cyan-100 mt-4 transition-all active:scale-[0.98]">
-              Sign up
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-[#22d3ee] hover:bg-cyan-500 disabled:opacity-70 disabled:cursor-not-allowed text-white font-bold py-4 rounded-2xl shadow-lg shadow-cyan-100 mt-4 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+            >
+              {loading ? (
+                <>
+                  <Loader2 size={20} className="animate-spin" />
+                  Signing up...
+                </>
+              ) : (
+                "Sign up"
+              )}
             </button>
           </form>
 
@@ -121,7 +201,7 @@ const Register: React.FC = () => {
           <div className="flex justify-center gap-4 mb-6">
             <SocialIcon bg="bg-blue-50" color="text-blue-600" label="F" />
             <SocialIcon bg="bg-orange-50" color="text-red-500" label="G" />
-            <SocialIcon bg="bg-gray-50" color="text-black" label="" />
+            <SocialIcon bg="bg-gray-50" color="text-black" label="" />
           </div>
 
           <p className="text-center text-sm text-gray-400">

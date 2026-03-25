@@ -1,18 +1,62 @@
 import React, { useState } from "react";
-import { Mail, Lock, EyeOff, Eye } from "lucide-react";
+import { Mail, Lock, EyeOff, Eye, Loader2 } from "lucide-react";
+
 const Login: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({ email: "", password: "" });
 
   const inputClass =
     "w-full py-3 pl-12 pr-10 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all";
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setError(null);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed. Please try again.");
+      }
+
+      // Save token if returned (adjust key based on your API response)
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+      }
+
+      // Redirect after successful login
+      window.location.href = "/dashboard";
+    } catch (err: any) {
+      setError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    
     <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-white rounded-[2.5rem] overflow-hidden shadow-2xl">
         {/* Header Section */}
-        <div className="bg-[#22d3ee]  p-8 pb-12 text-white relative">
+        <div className="bg-[#22d3ee] p-8 pb-12 text-white relative">
           <div className="inline-flex items-center gap-2 px-3 py-1 border border-cyan-800 rounded-full text-[10px] tracking-widest uppercase mb-6 text-white">
             <span className="p-1 bg-white rounded-sm">🖨️</span> Print Services
           </div>
@@ -33,17 +77,28 @@ const Login: React.FC = () => {
             Welcome back!
           </h2>
           <p className="text-slate-400 text-sm mb-8">
-            Choose your role to access the printing portal{" "}
+            Choose your role to access the printing portal
           </p>
 
-          <form className="space-y-4">
+          {/* Error Message */}
+          {error && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-red-500 text-sm text-center">
+              {error}
+            </div>
+          )}
+
+          <form className="space-y-4" onSubmit={handleSubmit}>
             {/* Email Input */}
             <div className="relative">
               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-500 w-5 h-5" />
               <input
+                name="email"
                 type="email"
                 placeholder="Email address"
                 className={inputClass}
+                value={formData.email}
+                onChange={handleChange}
+                required
               />
             </div>
 
@@ -51,9 +106,13 @@ const Login: React.FC = () => {
             <div className="relative">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-yellow-500 w-5 h-5" />
               <input
+                name="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 className={inputClass}
+                value={formData.password}
+                onChange={handleChange}
+                required
               />
               <button
                 type="button"
@@ -70,8 +129,19 @@ const Login: React.FC = () => {
               </a>
             </div>
 
-            <button className="w-full bg-[#22d3ee] hover:bg-cyan-500 text-white font-bold py-4 rounded-2xl shadow-lg shadow-cyan-200 transition-all transform active:scale-[0.98]">
-              Login
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-[#22d3ee] hover:bg-cyan-500 disabled:opacity-70 disabled:cursor-not-allowed text-white font-bold py-4 rounded-2xl shadow-lg shadow-cyan-200 transition-all transform active:scale-[0.98] flex items-center justify-center gap-2"
+            >
+              {loading ? (
+                <>
+                  <Loader2 size={20} className="animate-spin" />
+                  Logging in...
+                </>
+              ) : (
+                "Login"
+              )}
             </button>
           </form>
 
@@ -91,7 +161,7 @@ const Login: React.FC = () => {
 
           <p className="text-center text-sm text-gray-500">
             Don't have an account?{" "}
-            <a href="#" className="text-cyan-500 font-bold">
+            <a href="/register" className="text-cyan-500 font-bold">
               Sign up
             </a>
           </p>
@@ -103,7 +173,6 @@ const Login: React.FC = () => {
 
 const SocialButton = ({ icon }: { icon: string }) => (
   <button className="w-14 h-14 flex items-center justify-center rounded-2xl bg-gray-50 border border-gray-100 hover:bg-white hover:shadow-md transition-all">
-    {/* You can replace these with actual SVGs or react-icons */}
     <span className="capitalize text-lg font-bold">
       {icon === "google" ? <span className="text-red-500">G</span> : icon[0]}
     </span>

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import { useLanguage } from "../../context/LanguageContext";
 
-/* 1. CATEGORY KEYS (Logic Only - matches product.category) */
+/* 1. INTERNAL CATEGORY KEYS (Logic only) */
 const categories = ["banners", "carts", "business_cards", "posters", "flyers"];
 
 /* 2. TRANSLATIONS OBJECT */
@@ -17,10 +17,9 @@ const t = {
     quoteSub:
       "រក​មិន​ឃើញ​អ្វី​ដែល​អ្នក​ចង់​បាន? យើង​ដោះស្រាយ​គម្រោង​ផ្ទាល់ខ្លួន​គ្រប់​ទំហំ។",
     contactSupport: "ទំនាក់ទំនងការគាំទ្រ",
+    cats: ["បដា", "រទេះ", "នាមប័ណ្ណ", "ផូស្ទែរ", "ខិត្តប័ណ្ណ"],
     learnMore: "ស្វែងយល់បន្ថែម",
-    cats: ["បោះពុម្ព Banner", "បោះពុម្ព Stickers", "បោះពុម្ព Sticker Logos"],
-
-    // Product Text linked by ID
+    // Titles and Subtitles mapped to products 1-6
     productItems: [
       { title: "បដា Vinyl ខាងក្រៅ", sub: "ដំណោះស្រាយបោះពុម្ពធន់នឹងអាកាសធាតុ" },
       { title: "បដា Roll-Up", sub: "អេក្រង់ចល័តសម្រាប់ព្រឹត្តិការណ៍" },
@@ -40,8 +39,8 @@ const t = {
     quoteSub:
       "Can't find what you're looking for? We handle custom projects of all sizes.",
     contactSupport: "Contact Support",
+    cats: ["Banners", "Carts", "Business Cards", "Posters", "Flyers"],
     learnMore: "Learn More",
-    cats: ["Print Banners", "Print Stickers", "Print Sticker Logos"],
     productItems: [
       {
         title: "Vinyl Outdoor Banners",
@@ -62,8 +61,8 @@ const t = {
     quoteTitle: "需要定制报价？",
     quoteSub: "找不到您需要的产品？我们承接各种规模的定制项目。",
     contactSupport: "联系支持",
+    cats: ["横幅", "货车", "名片", "海报", "传单"],
     learnMore: "了解更多",
-    cats: ["打印横幅", "打印贴纸", "打印贴纸标志"],
     productItems: [
       { title: "乙烯基户外横幅", sub: "耐候印刷解决方案" },
       { title: "易拉宝横幅", sub: "活动便携式展示" },
@@ -75,7 +74,7 @@ const t = {
   },
 };
 
-/* 3. PRODUCT METADATA (Logic & Images only) */
+/* 3. PRODUCT METADATA (Source of truth for ID/Image/Tag) */
 const products = [
   {
     id: 1,
@@ -132,7 +131,7 @@ export default function InspirationGallery() {
   const { lang } = useLanguage();
   const [activeCategory, setActiveCategory] = useState(0);
 
-  // Dynamic Translation Object
+  // Safely get translations based on context
   const tx = t[lang as keyof typeof t] || t.en;
 
   const filtered = products.filter(
@@ -140,31 +139,33 @@ export default function InspirationGallery() {
   );
 
   return (
-    <div className="bg-[#f7f6f3] min-h-screen">
+    <div className="bg-[#f9f9f7] min-h-screen">
       <Navbar />
 
       {/* HERO SECTION */}
-      <section className="max-w-[1280px] mx-auto px-6 pt-16">
-        <div className="inline-flex items-center gap-2 bg-white border rounded-full px-4 py-1 text-sm text-gray-500 mb-4 shadow-sm">
+      <header className="max-w-[1280px] mx-auto px-6 pt-16">
+        <div className="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-1.5 text-[13px] font-bold text-gray-400 mb-6 shadow-sm">
           ✦ <span className="pt-0.5">{tx.eyebrow}</span>
         </div>
-        <h1 className="text-5xl font-bold mb-3 text-[#1a1714]">
+        <h1 className="text-5xl font-extrabold text-[#1a1714] mb-4 leading-tight">
           {tx.heroTitle}{" "}
           <span className="text-sky-500 italic">{tx.heroEm}</span>
         </h1>
-        <p className="text-gray-500 max-w-xl leading-relaxed">{tx.heroSub}</p>
-      </section>
+        <p className="text-gray-500 text-lg max-w-xl leading-relaxed">
+          {tx.heroSub}
+        </p>
+      </header>
 
       {/* CATEGORY TABS */}
-      <div className="max-w-[1280px] mx-auto px-6 pt-10 flex gap-2 overflow-x-auto no-scrollbar">
+      <div className="max-w-[1280px] mx-auto px-6 pt-10 flex gap-3 overflow-x-auto no-scrollbar">
         {tx.cats.map((cat, i) => (
           <button
             key={i}
             onClick={() => setActiveCategory(i)}
-            className={`px-6 py-2 rounded-full border transition-all font-bold text-sm whitespace-nowrap ${
+            className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all border ${
               activeCategory === i
-                ? "bg-sky-500 text-white border-sky-500 shadow-md"
-                : "bg-white text-gray-500 border-gray-200 hover:border-sky-300"
+                ? "bg-sky-500 border-sky-500 text-white shadow-md"
+                : "bg-white border-gray-200 text-gray-500 hover:border-sky-300"
             }`}
           >
             <span className="pt-0.5 inline-block">{cat}</span>
@@ -173,38 +174,39 @@ export default function InspirationGallery() {
       </div>
 
       {/* PRODUCT GRID */}
-      <main className="max-w-[1280px] mx-auto px-6 pt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <main className="max-w-[1280px] mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {filtered.map((product) => (
           <div
             key={product.id}
             onClick={() => navigate(`/detail/${product.id}`)}
             className="group bg-white rounded-[24px] overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer"
           >
-            {/* IMAGE SECTION */}
+            {/* Image & Tag */}
             <div className="relative h-[240px] overflow-hidden">
               <img
                 src={product.image}
+                alt=""
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
               <span
-                className="absolute top-4 left-4 text-[10px] font-black text-white px-3 py-1 rounded-full shadow-sm"
+                className="absolute top-4 left-4 text-[10px] font-black text-white px-3 py-1 rounded-full"
                 style={{ background: product.tagColor }}
               >
                 {product.tag}
               </span>
               <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center">
-                <button className="bg-white px-5 py-2 rounded-full font-bold text-sm shadow-lg">
+                <div className="bg-white px-5 py-2 rounded-full font-bold text-sm shadow-lg">
                   {tx.learnMore}
-                </button>
+                </div>
               </div>
             </div>
 
-            {/* TRANSLATED TEXT SECTION */}
+            {/* Translated Content */}
             <div className="p-7">
               <h3 className="font-bold text-xl text-gray-900 mb-1 leading-tight">
                 {tx.productItems[product.id - 1]?.title}
               </h3>
-              <p className="text-gray-400 text-[15px] font-medium">
+              <p className="text-gray-400 text-sm font-medium">
                 {tx.productItems[product.id - 1]?.sub}
               </p>
             </div>
@@ -212,20 +214,20 @@ export default function InspirationGallery() {
         ))}
       </main>
 
-      {/* QUOTE BOX */}
-      <div className="max-w-[1280px] mx-auto px-6 py-20">
-        <div className="bg-white border border-gray-100 rounded-[32px] p-10 md:p-14 flex flex-col md:flex-row items-center justify-between gap-8 shadow-sm">
+      {/* CTA SECTION */}
+      <footer className="max-w-[1280px] mx-auto px-6 pb-20">
+        <div className="bg-white border border-gray-100 rounded-[32px] p-10 flex flex-col md:flex-row items-center justify-between gap-8 shadow-sm">
           <div className="text-center md:text-left">
-            <h3 className="text-3xl font-bold text-gray-900 mb-2">
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">
               {tx.quoteTitle}
             </h3>
-            <p className="text-gray-500 text-lg">{tx.quoteSub}</p>
+            <p className="text-gray-500">{tx.quoteSub}</p>
           </div>
-          <button className="px-10 py-4 bg-[#1a1714] text-white font-bold rounded-2xl hover:bg-black transition-all shadow-lg hover:shadow-xl">
+          <button className="px-8 py-3.5 bg-[#1a1714] text-white font-bold rounded-xl hover:bg-black transition-all">
             {tx.contactSupport} →
           </button>
         </div>
-      </div>
+      </footer>
     </div>
   );
 }

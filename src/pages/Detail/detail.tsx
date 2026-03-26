@@ -358,14 +358,6 @@ export default function BannerDetailPage() {
                       {m.desc[lang]}
                     </span>
                   </div>
-
-                  <span
-                    className={`flex-shrink-0 text-xs font-bold ${
-                      material === m.id ? "text-blue-600" : "text-gray-400"
-                    }`}
-                  >
-                    {m.priceModifier > 0 ? `+$${m.priceModifier}` : "✓ Free"}
-                  </span>
                 </button>
               ))}
             </div>

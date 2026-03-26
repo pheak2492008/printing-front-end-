@@ -199,7 +199,7 @@ export default function InspirationGallery() {
       </div>
 
       {/* CLEANER QUOTE BOX */}
-      <div className="max-w-[1280px] mx-auto px-6 pb-20">
+      <div className="max-w-[1280px] mx-auto px-6 pb-20 p-10">
         <div className="bg-gradient-to-r from-sky-50 to-blue-50 border border-sky-100 rounded-3xl p-10 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 shadow-sm">
           <div className="max-w-lg text-center md:text-left">
             <h3 className="text-2xl font-semibold text-gray-800 mb-2">

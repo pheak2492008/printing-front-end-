@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 type LangKey = "en" | "zh" | "km";
 
@@ -95,11 +96,11 @@ const categories = [
   "Flyers",
 ];
 
-const products = [
+export const products = [
   {
     id: 1,
     tag: "BESTSELLER",
-    tagColor: "#10b981",
+    tagColor: "bg-emerald-500",
     title: "Vinyl Outdoor Banners",
     subtitle: "Weather-resistant printing solutions",
     image:
@@ -387,6 +388,7 @@ const styles = `
 `;
 
 export default function InspirationGallery() {
+  const navigate = useNavigate();
   const [lang, setLang] = useState<LangKey>("en");
   const [langOpen, setLangOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState(0);
@@ -506,7 +508,7 @@ export default function InspirationGallery() {
         </div>
       </nav>
 
-      {/* HERO */}
+      {/* HERO SECTION */}
       <section className="hero">
         <div className="hero-eyebrow">
           <span>✦</span> {tx.eyebrow}
@@ -517,10 +519,10 @@ export default function InspirationGallery() {
         <p className="hero-sub">{tx.heroSub}</p>
       </section>
 
-      {/* CATEGORY TABS */}
+      {/* TABS */}
       <div className="tabs-wrapper">
         <div className="tabs-scroll">
-          {tx.cats.map((cat, i) => (
+          {tx.cats.map((cat: string, i: number) => (
             <button
               key={i}
               className={`tab-btn${activeCategory === i ? " active" : ""}`}
@@ -532,11 +534,16 @@ export default function InspirationGallery() {
         </div>
       </div>
 
-      {/* PRODUCT GRID */}
+      {/* PRODUCT GRID - This is where the connection happens */}
       <div className="grid-wrapper">
         <div className="products-grid" key={`${lang}-${activeCategory}`}>
           {filtered.map((product) => (
-            <div key={product.id} className="card">
+            <div
+              key={product.id}
+              className="card"
+              onClick={() => navigate(`/detail/${product.id}`)}
+              style={{ cursor: "pointer" }}
+            >
               <div className="card-img-wrap">
                 <img src={product.image} alt={product.title} loading="lazy" />
                 <span
@@ -545,32 +552,12 @@ export default function InspirationGallery() {
                 >
                   {product.tag}
                 </span>
-                <div className="card-arrow">
-                  <svg width="14" height="14" fill="none" viewBox="0 0 24 24">
-                    <path
-                      d="M5 12h14M12 5l7 7-7 7"
-                      stroke="#111"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </div>
               </div>
               <div className="card-body">
                 <div className="card-title">{product.title}</div>
                 <div className="card-sub">{product.subtitle}</div>
                 <div className="card-footer">
                   <span className="card-cta">{tx.exploreOptions}</span>
-                  <svg className="card-icon" fill="none" viewBox="0 0 24 24">
-                    <path
-                      d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
                 </div>
               </div>
             </div>
@@ -578,7 +565,7 @@ export default function InspirationGallery() {
         </div>
       </div>
 
-      {/* CUSTOM QUOTE BANNER */}
+      {/* QUOTE BANNER */}
       <div className="quote-banner">
         <div className="quote-inner">
           <div className="quote-text">

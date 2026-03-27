@@ -197,7 +197,6 @@ const MOCKUP_GRADIENTS: Record<string, string> = {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function BannerDetailPage() {
-  // Pull lang from the SHARED context — same as Navbar & Gallery
   const { lang } = useLanguage();
 
   const [material, setMaterial] = useState("pvc");
@@ -205,33 +204,35 @@ export default function BannerDetailPage() {
   const [qty, setQty] = useState(1);
   const [activeImg, setActiveImg] = useState(0);
 
-  const tx = pageTx[lang];
+  const tx = pageTx[lang as LangKey] || pageTx.en;
   const selM = MATERIALS.find((m) => m.id === material)!;
   const basePrice = 25;
   const unitPrice = basePrice + selM.priceModifier;
   const totalPrice = (unitPrice * qty).toFixed(2);
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-[#f7f6f3] pb-20 font-sans">
       {/* ── Top bar ── */}
-      <div className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-gray-100 px-6 h-14 flex items-center justify-between">
+      <div className="sticky top-0 z-20 bg-white/80 backdrop-blur-md border-b border-gray-100 px-6 h-16 flex items-center justify-between">
         <button
           onClick={() => window.history.back()}
-          className="flex items-center gap-1 text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors"
+          className="flex items-center gap-1 text-sm font-bold text-gray-500 hover:text-[#1a1714] transition-colors"
         >
-          <ChevronLeft size={18} />
-          {tx.back}
+          <ChevronLeft size={20} />
+          <span className="pt-0.5">{tx.back}</span>
         </button>
-        <span className="text-sm font-bold text-gray-800">{tx.title}</span>
-        <div className="w-20" /> {/* spacer to center title */}
+        <span className="text-sm font-black text-[#1a1714] uppercase tracking-widest">
+          {tx.title}
+        </span>
+        <div className="w-20" />
       </div>
 
       {/* ── Main grid ── */}
-      <div className="max-w-6xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-10">
+      <div className="max-w-[1280px] mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-12">
         {/* ═══════ LEFT: visuals ═══════ */}
-        <div className="space-y-6">
+        <div className="space-y-8">
           {/* Main mockup */}
-          <div className="relative w-full aspect-[16/9] rounded-3xl overflow-hidden shadow-2xl bg-gray-200">
+          <div className="relative w-full aspect-[16/9] rounded-[32px] overflow-hidden shadow-sm bg-white border border-gray-100">
             <img
               src={GALLERY[activeImg].url}
               alt="Preview"
@@ -242,120 +243,112 @@ export default function BannerDetailPage() {
             />
             {finishing === "grommets" &&
               [
-                "top-4 left-4",
-                "top-4 right-4",
-                "bottom-4 left-4",
-                "bottom-4 right-4",
+                "top-6 left-6",
+                "top-6 right-6",
+                "bottom-6 left-6",
+                "bottom-6 right-6",
               ].map((pos, i) => (
                 <span
                   key={i}
-                  className={`absolute ${pos} w-6 h-6 rounded-full bg-gray-300 border-[4px] border-gray-500 shadow-inner z-10`}
+                  className={`absolute ${pos} w-5 h-5 rounded-full bg-gray-200 border-[3px] border-gray-400 shadow-inner z-10`}
                 />
               ))}
             {finishing === "hem" && (
-              <div className="absolute inset-4 border-[3px] border-white/30 rounded-2xl pointer-events-none z-10" />
+              <div className="absolute inset-5 border-[2px] border-white/40 rounded-[24px] pointer-events-none z-10" />
             )}
           </div>
 
           {/* Thumbnails */}
-          <div className="grid grid-cols-4 gap-3">
+          <div className="grid grid-cols-4 gap-4">
             {GALLERY.map((g, i) => (
               <button
                 key={i}
                 onClick={() => setActiveImg(i)}
-                className={`relative aspect-video rounded-xl overflow-hidden border-2 transition-all ${
+                className={`relative aspect-video rounded-[20px] overflow-hidden border-2 transition-all ${
                   activeImg === i
-                    ? "border-blue-500 scale-105 shadow-md"
-                    : "border-transparent opacity-60 hover:opacity-100 hover:scale-[1.03]"
+                    ? "border-[#0ea5e9] scale-105 shadow-md"
+                    : "border-transparent opacity-60 hover:opacity-100"
                 }`}
               >
                 <img
                   src={g.url}
-                  alt={g.label[lang]}
+                  alt={g.label[lang as LangKey]}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                <span className="absolute bottom-1 left-0 right-0 text-center text-white text-[9px] font-bold">
-                  {g.label[lang]}
+                <div className="absolute inset-0 bg-black/20" />
+                <span className="absolute bottom-2 left-0 right-0 text-center text-white text-[10px] font-black uppercase tracking-tighter">
+                  {g.label[lang as LangKey]}
                 </span>
               </button>
             ))}
           </div>
 
-          {/* Order */}
           <div className="bg-white p-5 rounded-3xl border border-gray-200 shadow-sm">
             <button className="w-full bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-black py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-3 text-base">
               <ShoppingCart size={20} />
+
               {tx.placeOrder}
             </button>
           </div>
         </div>
 
         {/* ═══════ RIGHT: config ═══════ */}
-        <div className="space-y-8">
-          {/* Title */}
+        <div className="space-y-10">
           <div>
-            <h1 className="text-4xl font-black text-gray-900 tracking-tight leading-tight">
+            <h1 className="text-4xl font-bold text-[#1a1714] mb-3 leading-tight">
               {tx.title}
             </h1>
-            <p className="mt-2 text-gray-500 leading-relaxed text-sm">
+            <p className="text-gray-500 font-medium leading-relaxed">
               {tx.subtitle}
             </p>
           </div>
 
           {/* ── Materials ── */}
           <section>
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="font-black text-xs uppercase tracking-widest text-gray-400">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-bold text-sm uppercase tracking-widest text-gray-400">
                 {tx.step1}
               </h3>
-              <button className="text-xs text-blue-500 font-semibold hover:text-blue-700 transition-colors">
+              <button className="text-xs text-[#0ea5e9] font-bold hover:underline">
                 {tx.materialGuide}
               </button>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-3">
               {MATERIALS.map((m) => (
                 <button
                   key={m.id}
                   onClick={() => setMaterial(m.id)}
-                  className={`w-full flex items-center gap-4 p-4 border-2 rounded-2xl text-left transition-all ${
+                  className={`w-full flex items-center gap-4 p-5 border transition-all rounded-[24px] text-left ${
                     material === m.id
-                      ? "border-blue-500 bg-blue-50/60 shadow-sm"
-                      : "border-gray-100 bg-white hover:border-gray-300 hover:bg-gray-50"
+                      ? "border-[#0ea5e9] bg-white shadow-md"
+                      : "border-gray-200 bg-white hover:border-[#0ea5e9]/50"
                   }`}
                 >
-                  {/* Radio dot */}
-                  <span
-                    className={`w-5 h-5 flex-shrink-0 rounded-full border-2 flex items-center justify-center transition-colors ${
+                  <div
+                    className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
                       material === m.id
-                        ? "border-blue-500 bg-blue-500"
-                        : "border-gray-300"
+                        ? "border-[#0ea5e9] bg-[#0ea5e9]"
+                        : "border-gray-200"
                     }`}
                   >
                     {material === m.id && (
-                      <span className="w-2 h-2 rounded-full bg-white" />
+                      <div className="w-2 h-2 rounded-full bg-white" />
                     )}
-                  </span>
+                  </div>
 
-                  <div className="flex-1 min-w-0">
+                  <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-bold text-sm text-gray-900">
-                        {m.name[lang]}
+                      <span className="font-bold text-[#1a1714]">
+                        {m.name[lang as LangKey]}
                       </span>
                       {m.badge && (
-                        <span
-                          className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                            m.id === "fabric"
-                              ? "bg-purple-100 text-purple-700"
-                              : "bg-amber-100 text-amber-700"
-                          }`}
-                        >
-                          {m.badge[lang]}
+                        <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-[#f7f6f3] text-gray-500 border border-gray-100">
+                          {m.badge[lang as LangKey]}
                         </span>
                       )}
                     </div>
-                    <span className="text-xs text-gray-500 mt-0.5 block leading-snug">
-                      {m.desc[lang]}
+                    <span className="text-sm text-gray-400 font-medium">
+                      {m.desc[lang as LangKey]}
                     </span>
                   </div>
                 </button>
@@ -365,52 +358,33 @@ export default function BannerDetailPage() {
 
           {/* ── Finishing ── */}
           <section>
-            <h3 className="font-black text-xs uppercase tracking-widest mb-3 text-gray-400">
+            <h3 className="font-bold text-sm uppercase tracking-widest mb-4 text-gray-400">
               {tx.step2}
             </h3>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-4">
               {FINISHINGS.map((f) => (
                 <button
                   key={f.id}
                   onClick={() => setFinishing(f.id)}
-                  className={`relative border-2 rounded-2xl overflow-hidden transition-all group text-left ${
+                  className={`relative border rounded-[24px] overflow-hidden transition-all group text-left bg-white ${
                     finishing === f.id
-                      ? "border-blue-500 shadow-md"
-                      : "border-gray-100 hover:border-gray-300"
+                      ? "border-[#0ea5e9] shadow-md"
+                      : "border-gray-200 hover:border-[#0ea5e9]/50"
                   }`}
                 >
-                  <div className="h-24 w-full overflow-hidden relative">
+                  <div className="h-28 w-full overflow-hidden">
                     <img
                       src={f.img}
-                      alt={f.name[lang]}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      alt={f.name[lang as LangKey]}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     />
-                    {finishing === f.id && (
-                      <div className="absolute top-2 right-2 bg-blue-500 rounded-full p-1 shadow">
-                        <svg
-                          className="w-3 h-3 text-white"
-                          viewBox="0 0 12 12"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2.5"
-                        >
-                          <path
-                            d="M2 6l3 3 5-5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </div>
-                    )}
                   </div>
-                  <div
-                    className={`px-3 py-2.5 transition-colors ${finishing === f.id ? "bg-blue-50" : "bg-white"}`}
-                  >
-                    <p className="font-bold text-sm text-gray-900">
-                      {f.name[lang]}
+                  <div className="p-4">
+                    <p className="font-bold text-[#1a1714] text-sm">
+                      {f.name[lang as LangKey]}
                     </p>
-                    <p className="text-xs text-gray-500 mt-0.5">
-                      {f.desc[lang]}
+                    <p className="text-xs text-gray-400 font-medium mt-1">
+                      {f.desc[lang as LangKey]}
                     </p>
                   </div>
                 </button>

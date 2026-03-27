@@ -2,12 +2,17 @@ import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage, type LangKey } from "../context/LanguageContext";
 import { languages, t } from "../locales/translations";
+import { User } from "lucide-react"; // Optional: for a profile icon
 
 export default function Navbar() {
   const navigate = useNavigate();
   const { lang, setLang } = useLanguage();
   const [langOpen, setLangOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
+
+  // ── AUTH CHECK ──
+  // Checks if a user token exists in local storage
+  const isLoggedIn = !!localStorage.getItem("userToken");
 
   const tx = t[lang as keyof typeof t] || t.en;
   const currentLang = languages.find((l) => l.code === lang) || languages[0];
@@ -21,6 +26,19 @@ export default function Navbar() {
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
+
+  // ── NAVIGATION LOGIC ──
+  const handleNavigate = (path: string) => {
+    // List of routes that require being logged in
+    const protectedRoutes = ["/order", "/profile"];
+
+    if (protectedRoutes.includes(path) && !isLoggedIn) {
+      // If user tries to go to Order/Profile but isn't logged in, send to register
+      navigate("/register");
+    } else {
+      navigate(path);
+    }
+  };
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-[#f8f9f8]/90 backdrop-blur-md border-b border-gray-100">
@@ -60,7 +78,7 @@ export default function Navbar() {
           ].map((item) => (
             <li
               key={item.path}
-              onClick={() => navigate(item.path)}
+              onClick={() => handleNavigate(item.path)} // Use protected navigation
               className="px-4 py-2 rounded-xl hover:bg-white hover:text-[#0ea5e9] transition-all cursor-pointer"
             >
               {item.label}
@@ -69,15 +87,24 @@ export default function Navbar() {
         </ul>
 
         <div className="flex items-center gap-3">
-          {/* SIGN IN */}
-          <button
-            className="hidden sm:block px-5 py-2.5 text-[15px] font-bold text-gray-700 border border-gray-200 rounded-xl hover:bg-white transition-all"
-            onClick={() => navigate("/signin")}
-          >
-            {tx.signIn}
-          </button>
+          {/* AUTH BUTTON (Dynamic) */}
+          {isLoggedIn ? (
+            <button
+              onClick={() => navigate("/profile")}
+              className="w-11 h-11 bg-white border border-gray-200 rounded-xl flex items-center justify-center text-gray-600 hover:border-sky-300 transition-all"
+            >
+              <User size={20} />
+            </button>
+          ) : (
+            <button
+              className="hidden sm:block px-5 py-2.5 text-[15px] font-bold text-gray-700 border border-gray-200 rounded-xl hover:bg-white transition-all"
+              onClick={() => navigate("/login")}
+            >
+              {tx.signIn}
+            </button>
+          )}
 
-          {/* LANGUAGE */}
+          {/* LANGUAGE SELECTOR */}
           <div className="relative" ref={langRef}>
             <button
               onClick={() => setLangOpen(!langOpen)}

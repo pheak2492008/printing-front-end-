@@ -10,7 +10,6 @@ import {
   Users,
   Globe,
 } from "lucide-react";
-import Navbar from "../../components/Navbar";
 import { useLanguage } from "../../context/LanguageContext";
 
 /* ── TRANSLATIONS ── */
@@ -113,8 +112,6 @@ export default function AboutPage() {
 
   return (
     <div className="min-h-screen bg-white font-sans overflow-x-hidden">
-      <Navbar />
-
       {/* ── HERO SECTION ── */}
       <section className="relative h-[40vh] flex items-center justify-center bg-slate-900">
         <img

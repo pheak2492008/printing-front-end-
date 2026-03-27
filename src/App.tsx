@@ -1,38 +1,57 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 import { LanguageProvider } from "./context/LanguageContext";
+
+// Components
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+
+// Pages
 import Register from "./pages/Authentication/Register";
 import Login from "./pages/Authentication/Login";
 import Home from "./pages/Home/home";
 import Detail from "./pages/Detail/detail";
 import About from "./pages/About/about";
-// import Order from "./pages/Order/order"; // TODO: Uncomment when Order component is created
+
+// This small sub-component handles the hiding logic
+function LayoutWrapper({ children }: { children: React.ReactNode }) {
+  const location = useLocation();
+
+  // Define paths where the Navbar should NOT show
+  // This uses .startsWith because details usually have IDs (e.g., /detail/1)
+  const hideNavbar = location.pathname.startsWith("/detail");
+
+  return (
+    <>
+      {!hideNavbar && <Navbar />}
+      <main className="min-h-screen">{children}</main>
+      <Footer />
+    </>
+  );
+}
 
 function App() {
-  // Simple check for user (You can replace this with your real Auth state/Context)
-  const isAuthenticated = localStorage.getItem("userToken");
+  const isAuthenticated = !!localStorage.getItem("userToken");
 
   return (
     <LanguageProvider>
       <BrowserRouter>
-        <Routes>
-          {/* Public Routes - Everyone can see these */}
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/detail/:id" element={<Detail />} />
+        <LayoutWrapper>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/detail/:id" element={<Detail />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
 
-          {/* Auth Routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-
-          {/* Protected Route Example: Order */}
-          {/* <Route
-            path="/order"
-            element={isAuthenticated ? <Order /> : <Navigate to="/register" />}
-          /> */}
-
-          {/* Redirect any unknown route to home */}
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </LayoutWrapper>
       </BrowserRouter>
     </LanguageProvider>
   );

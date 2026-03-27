@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../../components/Navbar";
 import { useLanguage } from "../../context/LanguageContext";
 
 /* 1. CATEGORY KEYS (Logic Only - matches product.category) */
@@ -176,8 +175,6 @@ export default function InspirationGallery() {
 
   return (
     <div className="bg-white min-h-screen">
-      <Navbar />
-
       <section
         className="w-full"
         style={{

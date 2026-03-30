@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLanguage } from "../../context/LanguageContext";
 
 /* 1. CATEGORY KEYS (Logic Only - matches product.category) */
@@ -312,9 +312,13 @@ export default function InspirationGallery() {
             </h3>
             <p className="text-gray-500 text-lg">{tx.quoteSub}</p>
           </div>
-          <button className="px-10 py-4 bg-red-500 text-white font-bold rounded-2xl hover:bg-red-600 transition-all shadow-lg whitespace-nowrap">
-            {tx.contactSupport} →
-          </button>
+
+          {/* Wrap the button in a Link to /faq */}
+          <Link to="/faq">
+            <button className="px-10 py-4 bg-red-500 text-white font-bold rounded-2xl hover:bg-red-600 transition-all shadow-lg whitespace-nowrap">
+              {tx.contactSupport} →
+            </button>
+          </Link>
         </div>
       </div>
     </div>

@@ -22,33 +22,23 @@ import OrderPage from "./pages/Order/orderPage";
 import FAQ from "./pages/Faq/faqPage";
 import ProfilePage from "./pages/Profile/profileUser";
 
-/**
- * LayoutWrapper checks the current URL.
- * If it's a page like /profile, it hides the global Navbar and Footer.
- */
 function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const path = location.pathname;
 
-  // List of paths where we DO NOT want the global Navbar/Footer
-  const isFullScreenPage =
-    path === "/login" ||
-    path === "/register" ||
-    path.startsWith("/detail") ||
-    path === "/profile";
+  // These pages will NOT show the global Navbar or Footer
+  const isFullScreen =
+    path === "/login" || path === "/register" || path === "/profile";
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {!isFullScreenPage && <Navbar />}
+    <div className="flex flex-col min-h-screen bg-[#f8f9f8]">
+      {!isFullScreen && <Navbar />}
 
-      {/* We remove 'pt-16' (padding top) for full-screen pages 
-        so your Profile header touches the very top of the screen.
-      */}
-      <main className={`flex-grow ${isFullScreenPage ? "" : "pt-20"}`}>
+      <main className={isFullScreen ? "w-full" : "w-full pt-20"}>
         {children}
       </main>
 
-      {!isFullScreenPage && <Footer />}
+      {!isFullScreen && <Footer />}
     </div>
   );
 }
@@ -68,7 +58,6 @@ export default function App() {
               <Route path="/order" element={<OrderPage />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/profile" element={<ProfilePage />} />
-              {/* Redirect any unknown routes to Home */}
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </LayoutWrapper>

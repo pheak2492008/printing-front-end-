@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useLanguage } from "../../context/LanguageContext";
 import {
   ChevronDown,
@@ -282,9 +283,11 @@ export default function FaqPage() {
                 <p className="text-xs text-slate-500 leading-relaxed mb-6">
                   {tx.stuckSub}
                 </p>
-                <button className="w-full py-4 bg-slate-900 text-white rounded-xl text-xs font-black hover:bg-blue-600 transition-all uppercase tracking-widest shadow-lg">
-                  {tx.contactBtn}
-                </button>
+                <Link to="/about">
+                  <button className="w-full py-4 bg-slate-900 text-white rounded-xl text-xs font-black hover:bg-blue-600 transition-all uppercase tracking-widest shadow-lg">
+                    {tx.contactBtn}
+                  </button>
+                </Link>
               </div>
             </div>
           </div>

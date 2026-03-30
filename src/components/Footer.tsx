@@ -56,7 +56,7 @@ export default function Footer() {
   const isLoggedIn = !!localStorage.getItem("userToken");
 
   const handleProtectedNav = (path: string) => {
-    if (path === "/order" && !isLoggedIn) {
+    if (path === "" && !isLoggedIn) {
       navigate("/register");
     } else {
       navigate(path);

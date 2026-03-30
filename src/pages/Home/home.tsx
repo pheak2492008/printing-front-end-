@@ -157,6 +157,38 @@ const products = [
     image:
       "https://images.unsplash.com/photo-1504805572947-34fad45aed93?w=600&q=80",
   },
+  {
+    id: 8,
+    tag: "TRENDING",
+    tagColor: "#2563eb",
+    category: "flyers",
+    image:
+      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80",
+  },
+  {
+    id: 9,
+    tag: "NEW",
+    tagColor: "#2563eb",
+    category: "banners",
+    image:
+      "https://images.unsplash.com/photo-1542744094-3a31f272c490?w=600&q=80",
+  },
+  {
+    id: 10,
+    tag: "POPULAR",
+    tagColor: "#2563eb",
+    category: "banners",
+    image:
+      "https://images.unsplash.com/photo-1504805572947-34fad45aed93?w=600&q=80",
+  },
+  {
+    id: 11,
+    tag: "BESTSELLER",
+    tagColor: "#2563eb",
+    category: "banners",
+    image:
+      "https://images.unsplash.com/photo-1588681664899-f142ff2dc9b1?w=600&q=80",
+  },
 ];
 
 const HERO_BANNER_IMAGE =

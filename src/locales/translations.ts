@@ -17,6 +17,7 @@ export const t = {
       faq: "សំណួរ",
       order: "ការបញ្ជាទិញ",
       profile: "ប្រវត្តិរូប",
+      logout: "ចាកចេញ", // ✅ Added
     },
     eyebrow: "វិចិត្រសាលការបំផុស",
     heroTitle: "រកឃើញដំណោះស្រាយការបោះពុម្ពសម្រាប់",
@@ -42,6 +43,7 @@ export const t = {
       faq: "FAQ",
       order: "Order",
       profile: "Profile",
+      logout: "Logout", // ✅ Added
     },
     eyebrow: "Inspiration Gallery",
     heroTitle: "Discover printing solutions for your",
@@ -68,6 +70,7 @@ export const t = {
       faq: "常见问题",
       order: "订单",
       profile: "个人资料",
+      logout: "退出登录", // ✅ Added
     },
     eyebrow: "灵感画廊",
     heroTitle: "发现适合您的印刷解决方案",

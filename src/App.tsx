@@ -6,7 +6,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { LanguageProvider } from "./context/LanguageContext";
-import { AuthProvider } from "./context/AuthContext"; // 1. Import AuthProvider
+import { AuthProvider } from "./context/AuthContext";
 
 // Components
 import Navbar from "./components/Navbar";
@@ -21,28 +21,40 @@ import About from "./pages/About/about";
 import OrderPage from "./pages/Order/orderPage";
 import FAQ from "./pages/Faq/faqPage";
 import ProfilePage from "./pages/Profile/profileUser";
-// Component to handle showing/hiding Nav and Footer
+
+/**
+ * LayoutWrapper checks the current URL.
+ * If it's a page like /profile, it hides the global Navbar and Footer.
+ */
 function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const path = location.pathname;
 
-  // Hide Nav/Footer on Login, Register, and Detail pages
-  const isAuthOrDetail =
-    path === "/login" || path === "/register" || path.startsWith("/detail");
+  // List of paths where we DO NOT want the global Navbar/Footer
+  const isFullScreenPage =
+    path === "/login" ||
+    path === "/register" ||
+    path.startsWith("/detail") ||
+    path === "/profile";
 
   return (
-    <>
-      {/* 2. Navbar is now inside the AuthProvider, so it can see if user is logged in */}
-      {!isAuthOrDetail && <Navbar />}
-      <main className="min-h-screen">{children}</main>
-      {!isAuthOrDetail && <Footer />}
-    </>
+    <div className="flex flex-col min-h-screen">
+      {!isFullScreenPage && <Navbar />}
+
+      {/* We remove 'pt-16' (padding top) for full-screen pages 
+        so your Profile header touches the very top of the screen.
+      */}
+      <main className={`flex-grow ${isFullScreenPage ? "" : "pt-20"}`}>
+        {children}
+      </main>
+
+      {!isFullScreenPage && <Footer />}
+    </div>
   );
 }
 
-function App() {
+export default function App() {
   return (
-    /* 3. Wrap EVERYTHING in AuthProvider first */
     <AuthProvider>
       <LanguageProvider>
         <BrowserRouter>
@@ -51,16 +63,12 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/detail/:id" element={<Detail />} />
-
-              {/* Make sure these paths match what you use in navigate() */}
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-
-              {/* The OrderPage will now correctly use the Auth State */}
               <Route path="/order" element={<OrderPage />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/profile" element={<ProfilePage />} />
-
+              {/* Redirect any unknown routes to Home */}
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </LayoutWrapper>
@@ -69,5 +77,3 @@ function App() {
     </AuthProvider>
   );
 }
-
-export default App;

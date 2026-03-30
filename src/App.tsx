@@ -19,7 +19,8 @@ import Home from "./pages/Home/home";
 import Detail from "./pages/Detail/detail";
 import About from "./pages/About/about";
 import OrderPage from "./pages/Order/orderPage";
-
+import FAQ from "./pages/Faq/faqPage";
+import ProfilePage from "./pages/Profile/profileUser";
 // Component to handle showing/hiding Nav and Footer
 function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const location = useLocation();
@@ -57,6 +58,8 @@ function App() {
 
               {/* The OrderPage will now correctly use the Auth State */}
               <Route path="/order" element={<OrderPage />} />
+              <Route path="/faq" element={<FAQ />} />
+              <Route path="/profile" element={<ProfilePage />} />
 
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>

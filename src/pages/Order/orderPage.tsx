@@ -57,6 +57,28 @@ const t = {
     inkOptions: ["Eco-Solvent", "ទឹកថ្នាំ UV", "ទឹកថ្នាំ Latex"],
     finishingOpts: ["ចោះប៊ុតុង", "បត់គែម", "ស៊កបង្គោល", "បិទស្កុត"],
   },
+  zh: {
+    title: "定制户外喷绘横幅",
+    subtitle: "高品质 440gsm 印刷，具有防紫外线和防雨涂层。",
+    materialSelection: "材料选择",
+    banner: "01. 横幅类型",
+    sticker: "02. 贴纸类型",
+    dimensions: "尺寸规格",
+    widthLabel: "宽度 (米)",
+    lengthLabel: "长度 (米)",
+    inkChoice: "油墨选择",
+    finishingOptions: "后期加工选项",
+    uploadDesign: "上传设计稿",
+    tapToUpload: "点击此处上传文件",
+    uploadSub: "支持 JPEG, PNG, 或 PDF (最大 50MB)",
+    estimatedTotal: "预计总金额",
+    checkout: "去结算",
+    summary: "订单详情",
+    bannerOptions: ["标准喷绘布", "UV 高清布", "网格布"],
+    stickerOptions: ["白色车贴", "透明贴纸", "3M 高端车贴"],
+    inkOptions: ["弱溶剂墨水", "UV 墨水", "Latex 乳胶墨水"],
+    finishingOpts: ["打扣眼", "折边", "旗杆口袋", "魔术贴"],
+  },
 };
 
 const PRICE_PER_SQM = 2.01;

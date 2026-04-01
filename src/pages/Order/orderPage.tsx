@@ -21,15 +21,25 @@ export default function OrderPage() {
     deliveryPhone: "",
     deliveryLandmark: "",
     locationCoords: null,
+    uploadedFiles: [], // 1. Added this to track images
   });
 
   const [showPayment, setShowPayment] = useState(false);
 
+  // 2. Updated Calculation Logic
   const DELIVERY_FEE = state.deliveryMethod === "delivery" ? 2.0 : 0;
+
+  // Logic: First image is free, others are $1.00 each
+  const fileCount = state.uploadedFiles?.length || 0;
+  const extraFileFee = Math.max(0, fileCount - 1) * 1.0;
+
+  // Calculate base price + delivery + extra image fees
   const total = (
     parseFloat(state.width || "0") * parseFloat(state.length || "0") * 2.01 +
-    DELIVERY_FEE
-  ).toFixed(2);
+    DELIVERY_FEE +
+    extraFileFee
+  ) // 3. Added the fee here
+    .toFixed(2);
 
   const handleConfirm = () => {
     if (state.activeBank === "CASH") {
@@ -63,7 +73,7 @@ export default function OrderPage() {
           tx={tx as typeof TRANSLATIONS.en}
           state={state}
           setState={setState}
-          total={total}
+          total={total} // This now passes the dynamic total including image fees
           onConfirm={handleConfirm}
         />
       </div>

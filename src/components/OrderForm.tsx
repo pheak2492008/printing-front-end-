@@ -7,7 +7,6 @@ import {
   Check,
   X,
   Plus,
-  FileText,
 } from "lucide-react";
 import type { Tx, OrderState } from "./orderTypes";
 
@@ -17,7 +16,7 @@ interface Props {
   setState: React.Dispatch<React.SetStateAction<OrderState>>;
 }
 
-/** * UI Components */
+/** UI Helpers **/
 function Badge({
   icon,
   text,
@@ -59,11 +58,7 @@ function OptionCard({
   return (
     <button
       onClick={onClick}
-      className={`w-full flex items-center justify-between px-6 py-4 rounded-2xl border-2 transition-all ${
-        active
-          ? "border-blue-600 bg-blue-50 shadow-sm"
-          : "border-slate-100 bg-white hover:border-slate-200"
-      }`}
+      className={`w-full flex items-center justify-between px-6 py-4 rounded-2xl border-2 transition-all ${active ? "border-blue-600 bg-blue-50" : "border-slate-100 bg-white"}`}
     >
       <span
         className={`font-bold text-sm ${active ? "text-blue-700" : "text-slate-600"}`}
@@ -71,7 +66,7 @@ function OptionCard({
         {label}
       </span>
       <div
-        className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${active ? "border-blue-600 bg-blue-600" : "border-slate-200"}`}
+        className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${active ? "border-blue-600 bg-blue-600" : "border-slate-200"}`}
       >
         {active && <Check size={12} className="text-white" strokeWidth={4} />}
       </div>
@@ -103,11 +98,8 @@ function InputBox({
   );
 }
 
-/** * Main Form Component */
 export default function OrderForm({ tx, state, setState }: Props) {
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  // Local state to store preview URLs (blobs)
   const [previews, setPreviews] = useState<string[]>([]);
 
   const set = <K extends keyof OrderState>(key: K, val: OrderState[K]) =>
@@ -117,30 +109,19 @@ export default function OrderForm({ tx, state, setState }: Props) {
     const files = e.target.files;
     if (files) {
       const newFiles = Array.from(files);
-
-      // 1. Create Preview URLs
       const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
       setPreviews((prev) => [...prev, ...newPreviews]);
-
-      // 2. Update Global State (assuming state.uploadedFiles is File[])
-      // If your state doesn't have 'uploadedFiles' yet, add it to orderTypes.tsx
-      set("uploadedFiles" as any, [
-        ...((state as any).uploadedFiles || []),
-        ...newFiles,
-      ]);
+      set("uploadedFiles", [...(state.uploadedFiles || []), ...newFiles]);
     }
   };
 
   const removeImage = (index: number) => {
-    // Revoke the URL to save memory
     URL.revokeObjectURL(previews[index]);
-
     setPreviews((prev) => prev.filter((_, i) => i !== index));
-
-    const updatedFiles = ((state as any).uploadedFiles || []).filter(
-      (_: any, i: number) => i !== index,
+    set(
+      "uploadedFiles",
+      state.uploadedFiles.filter((_, i) => i !== index),
     );
-    set("uploadedFiles" as any, updatedFiles);
   };
 
   return (
@@ -175,7 +156,7 @@ export default function OrderForm({ tx, state, setState }: Props) {
       </div>
 
       <div className="bg-white rounded-[2.5rem] border border-slate-100 p-8 md:p-12 space-y-12 shadow-sm">
-        {/* Step 01 - Material */}
+        {/* Step 01: Material */}
         <section>
           <SectionHeader num="01" title={tx.step1} />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -208,7 +189,7 @@ export default function OrderForm({ tx, state, setState }: Props) {
           </div>
         </section>
 
-        {/* Step 02 & 03 - Dimensions & Ink */}
+        {/* Step 02 & 03: Dimensions & Ink */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-10">
           <div className="space-y-6">
             <SectionHeader num="02" title={tx.step2} />
@@ -227,16 +208,30 @@ export default function OrderForm({ tx, state, setState }: Props) {
           </div>
           <div className="space-y-6">
             <SectionHeader num="03" title={tx.step3} />
-            <select className="w-full h-14 bg-slate-50 border border-slate-200 rounded-2xl px-6 font-bold outline-none focus:ring-2 focus:ring-blue-500/20">
+            <select className="w-full h-14 bg-slate-50 border border-slate-200 rounded-2xl px-6 font-bold outline-none focus:ring-2 focus:ring-blue-500/20 transition-all">
               <option>Eco-Solvent (Standard)</option>
               <option>UV Printing (Premium)</option>
             </select>
           </div>
         </section>
 
-        {/* Step 04 - Multiple File Upload */}
+        {/* Step 04: Upload Design */}
         <section className="space-y-8">
-          <SectionHeader num="04" title={tx.step4} />
+          <div className="flex justify-between items-center">
+            <SectionHeader num="04" title={tx.step4} />
+            {state.uploadedFiles?.length > 0 && (
+              <div className="flex flex-col items-end gap-1 animate-in slide-in-from-right-4 duration-300">
+                <span className="text-[10px] font-black text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
+                  1ST IMAGE: FREE
+                </span>
+                {state.uploadedFiles.length > 1 && (
+                  <span className="text-[10px] font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
+                    +{state.uploadedFiles.length - 1} EXTRA (+$1.00 each)
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
 
           <input
             type="file"
@@ -244,49 +239,45 @@ export default function OrderForm({ tx, state, setState }: Props) {
             onChange={handleFileChange}
             className="hidden"
             accept="image/*"
-            multiple // Allows selecting more than one file
+            multiple
           />
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {/* Render Previews */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
             {previews.map((url, index) => (
               <div
                 key={index}
-                className="relative aspect-square bg-slate-50 border border-slate-200 rounded-3xl overflow-hidden group"
+                className="relative aspect-square bg-slate-50 border border-slate-200 rounded-[2rem] overflow-hidden group shadow-sm transition-all hover:border-blue-200"
               >
                 <img
                   src={url}
                   alt="Upload"
-                  className="w-full h-full object-contain p-2"
+                  className="w-full h-full object-contain p-4"
                 />
+                <div
+                  className={`absolute bottom-3 left-3 px-2 py-0.5 rounded text-[8px] font-black uppercase ${index === 0 ? "bg-emerald-500 text-white" : "bg-slate-800 text-white"}`}
+                >
+                  {index === 0 ? "Included" : `Extra File`}
+                </div>
                 <button
                   onClick={() => removeImage(index)}
-                  className="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute top-3 right-3 bg-red-500 text-white p-1.5 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity"
                 >
                   <X size={14} />
                 </button>
               </div>
             ))}
 
-            {/* Upload Button Box */}
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="aspect-square border-2 border-dashed border-slate-200 rounded-3xl flex flex-col items-center justify-center hover:bg-blue-50 hover:border-blue-400 transition-all group"
+              className="aspect-square border-2 border-dashed border-slate-200 rounded-[2rem] flex flex-col items-center justify-center hover:bg-blue-50 hover:border-blue-400 transition-all group"
             >
-              <div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
-                {previews.length > 0 ? (
-                  <Plus className="text-blue-600" />
-                ) : (
-                  <Upload className="text-blue-600" />
-                )}
-              </div>
-              <p className="text-[10px] font-black text-slate-900 uppercase">
+              <Plus className="text-blue-600 mb-2 group-hover:scale-110 transition-transform" />
+              <p className="text-[10px] font-black text-slate-900 uppercase italic tracking-tighter">
                 {previews.length > 0 ? "Add More" : tx.tapUpload}
               </p>
             </button>
           </div>
 
-          {/* Description */}
           <div className="space-y-3">
             <div className="flex items-center gap-2 text-blue-600">
               <MousePointerClick size={18} />
@@ -298,7 +289,7 @@ export default function OrderForm({ tx, state, setState }: Props) {
               value={state.description}
               onChange={(e) => set("description", e.target.value)}
               placeholder={tx.descPlaceholder}
-              className="w-full p-6 bg-slate-50 border border-slate-200 rounded-[2rem] min-h-[150px] outline-none focus:ring-2 focus:ring-blue-500/20"
+              className="w-full p-6 bg-slate-50 border border-slate-200 rounded-[2rem] min-h-[150px] outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"
             />
           </div>
         </section>

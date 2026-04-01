@@ -1,9 +1,10 @@
-// Corrected paths: assets is only one level up from components
 import abaQR from "../assets/aba.png";
 import acledaQR from "../assets/acleda.png";
 import wingQR from "../assets/pring.jpg";
 
-/** * PAYMENT_DATA Configuration */
+/** * PAYMENT_DATA Configuration
+ * Includes QR codes and branding for the payment screen
+ */
 export const PAYMENT_DATA: Record<
   string,
   {
@@ -41,6 +42,9 @@ export const PAYMENT_DATA: Record<
   },
 };
 
+/** * TRANSLATIONS
+ * Supports English, Khmer, and Chinese
+ */
 export const TRANSLATIONS = {
   en: {
     heroTitle: "Custom Outdoor Banner",
@@ -173,6 +177,10 @@ export const TRANSLATIONS = {
 export type Lang = keyof typeof TRANSLATIONS;
 export type Tx = typeof TRANSLATIONS.en;
 
+/**
+ * GLOBAL STATE INTERFACE
+ * Ensure uploadedFiles is an array of Files for multiple image support
+ */
 export interface OrderState {
   selectedBanner: number;
   selectedSticker: number;
@@ -185,4 +193,5 @@ export interface OrderState {
   deliveryPhone: string;
   deliveryLandmark: string;
   locationCoords: { lat: number; lng: number } | null;
+  uploadedFiles: File[]; // Crucial for "1st Free, others Extra" logic
 }

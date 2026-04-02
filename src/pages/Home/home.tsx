@@ -1,6 +1,15 @@
-import { useState } from "react";
+import {
+  useState,
+  type JSXElementConstructor,
+  type Key,
+  type ReactElement,
+  type ReactNode,
+  type ReactPortal,
+} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLanguage } from "../../context/LanguageContext";
+import Partner from "./partner";
+import Reviews from "./reviwe";
 
 /* 1. CATEGORY KEYS (Logic Only - matches product.category) */
 const categories = ["banners", "carts", "business_cards", "posters", "flyers"];
@@ -99,6 +108,21 @@ const t = {
     },
   },
 };
+/* Infinite scroll marquee strip logos (top row) */
+const marqueeLogos = [
+  "PrintMaster",
+  "BrandWorks",
+  "LogoNation",
+  "MediaHub",
+  "SignCraft",
+  "EventForge",
+  "PixelPress",
+  "InkHouse",
+  "PrintMaster",
+  "BrandWorks",
+  "LogoNation",
+  "MediaHub",
+];
 
 const products = [
   {
@@ -206,7 +230,55 @@ export default function InspirationGallery() {
   );
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-white min-h-screen ">
+      {/* ── Marquee Strip ── */}
+      <div
+        className="w-full overflow-hidden "
+        style={{ background: "linear-gradient(90deg,#0f172a,#1e3a5f,#0f172a)" }}
+      >
+        <div
+          className="flex gap-12 py-4 whitespace-nowrap"
+          style={{
+            animation: "marquee 20s linear infinite",
+            width: "max-content",
+          }}
+        >
+          {marqueeLogos.map(
+            (
+              name:
+                | string
+                | number
+                | bigint
+                | boolean
+                | ReactElement<unknown, string | JSXElementConstructor<any>>
+                | Iterable<ReactNode>
+                | ReactPortal
+                | Promise<
+                    | string
+                    | number
+                    | bigint
+                    | boolean
+                    | ReactPortal
+                    | ReactElement<unknown, string | JSXElementConstructor<any>>
+                    | Iterable<ReactNode>
+                    | null
+                    | undefined
+                  >
+                | null
+                | undefined,
+              i: Key | null | undefined,
+            ) => (
+              <span
+                key={i}
+                className="text-white/60 font-bold text-sm uppercase tracking-widest px-4"
+              >
+                {name}
+              </span>
+            ),
+          )}
+        </div>
+        <style>{`@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}`}</style>
+      </div>
       <section
         className="w-full"
         style={{
@@ -223,9 +295,12 @@ export default function InspirationGallery() {
             <p className="text-blue-200 text-base md:text-lg max-w-lg mb-8 leading-relaxed">
               {tx.heroSub}
             </p>
-            <button className="px-8 py-3 bg-[#eb2546] hover:bg-red-600 text-white font-bold rounded-lg transition-all shadow-md text-sm">
+            <Link
+              to="/order"
+              className="px-8 py-3 bg-[#eb2546] hover:bg-red-600 text-white font-bold rounded-lg transition-all shadow-md text-sm"
+            >
               {tx.getStarted}
-            </button>
+            </Link>
           </div>
 
           <div className="flex-shrink-0 w-full md:w-[380px] h-[260px] md:h-[300px] rounded-2xl overflow-hidden shadow-2xl">
@@ -321,6 +396,8 @@ export default function InspirationGallery() {
           </Link>
         </div>
       </div>
+      <Reviews />
+      <Partner />
     </div>
   );
 }

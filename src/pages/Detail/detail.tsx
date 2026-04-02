@@ -211,22 +211,7 @@ export default function BannerDetailPage() {
   const totalPrice = (unitPrice * qty).toFixed(2);
 
   return (
-    <div className="min-h-screen bg-[#f7f6f3] pb-20 font-sans">
-      {/* ── Top bar ── */}
-      <div className="sticky top-0 z-20 bg-white/80 backdrop-blur-md border-b border-gray-100 px-6 h-16 flex items-center justify-between">
-        <button
-          onClick={() => window.history.back()}
-          className="flex items-center gap-1 text-sm font-bold text-gray-500 hover:text-[#1a1714] transition-colors"
-        >
-          <ChevronLeft size={20} />
-          <span className="pt-0.5">{tx.back}</span>
-        </button>
-        <span className="text-sm font-black text-[#1a1714] uppercase tracking-widest">
-          {tx.title}
-        </span>
-        <div className="w-20" />
-      </div>
-
+    <div className="min-h-screen bg-[#f7f6f3]  font-sans">
       {/* ── Main grid ── */}
       <div className="max-w-[1280px] mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-12">
         {/* ═══════ LEFT: visuals ═══════ */}

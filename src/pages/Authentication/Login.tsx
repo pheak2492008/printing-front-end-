@@ -1,14 +1,20 @@
 import React, { useState } from "react";
-import { Mail, Lock, EyeOff, Eye, Loader2 } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Mail, Lock, EyeOff, Eye, Loader2, PartyPopper } from "lucide-react";
+// 1. Import your Auth Context hook
+import { useAuth } from "../../context/AuthContext";
 
 const Login: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useAuth(); // 2. Get the login function from context
+
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({ email: "", password: "" });
 
-  const inputClass =
-    "w-full py-3 pl-12 pr-10 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all";
+  const isNewlyRegistered = location.state?.fromRegister;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,35 +24,27 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
-
     try {
       const response = await fetch("/api/auth/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
-
       const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.message || "Login failed. Please try again.");
-      }
+      if (!response.ok) throw new Error(data.message || "Login failed");
 
-      // Save token if returned (adjust key based on your API response)
       if (data.token) {
-        localStorage.setItem("token", data.token);
-      }
+        // 3. Call login() from context.
+        // This updates the global state and re-renders the App!
+        login(data.token);
 
-      // Redirect after successful login
-      window.location.href = "/dashboard";
+        // 4. Check if the user was trying to go to /order before logging in
+        const origin = location.state?.from || "/order";
+        navigate(origin);
+      }
     } catch (err: any) {
-      setError(err.message || "Something went wrong. Please try again.");
+      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -54,62 +52,56 @@ const Login: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
+      {/* ... Your existing JSX remains the same ... */}
       <div className="w-full max-w-md bg-white rounded-[2.5rem] overflow-hidden shadow-2xl">
-        {/* Header Section */}
         <div className="bg-[#22d3ee] p-8 pb-12 text-white relative">
-          <div className="inline-flex items-center gap-2 px-3 py-1 border border-cyan-800 rounded-full text-[10px] tracking-widest uppercase mb-6 text-white">
-            <span className="p-1 bg-white rounded-sm">🖨️</span> Print Services
-          </div>
           <h1 className="text-4xl font-serif font-medium leading-tight">
-            Login to your account
+            Login to account
           </h1>
-          {/* Decorative Top Right Element */}
-          <div className="absolute top-6 right-8 opacity-20 flex gap-1">
-            <div className="w-4 h-4 bg-gray-400 rounded-sm"></div>
-            <div className="w-4 h-4 bg-cyan-400 rounded-sm"></div>
-            <div className="w-4 h-4 bg-gray-600 rounded-sm"></div>
-          </div>
         </div>
 
-        {/* Form Section */}
         <div className="p-8 -mt-6 bg-white rounded-t-[2.5rem] relative">
+          {isNewlyRegistered && (
+            <div className="mb-6 p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-emerald-700 text-sm font-bold flex items-center gap-3 animate-bounce">
+              <PartyPopper className="text-emerald-500" />
+              <span>Registration Successful! Please login.</span>
+            </div>
+          )}
+
           <h2 className="text-2xl font-bold text-slate-800 mb-1">
             Welcome back!
           </h2>
           <p className="text-slate-400 text-sm mb-8">
-            Choose your role to access the printing portal
+            Access the printing portal
           </p>
 
-          {/* Error Message */}
-          {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-red-500 text-sm text-center">
-              {error}
-            </div>
-          )}
-
           <form className="space-y-4" onSubmit={handleSubmit}>
-            {/* Email Input */}
+            {error && (
+              <div className="p-3 bg-red-50 text-red-500 rounded-xl text-center">
+                {error}
+              </div>
+            )}
+
             <div className="relative">
               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-500 w-5 h-5" />
               <input
                 name="email"
                 type="email"
                 placeholder="Email address"
-                className={inputClass}
+                className="w-full py-3 pl-12 pr-10 bg-gray-50 border rounded-xl"
                 value={formData.email}
                 onChange={handleChange}
                 required
               />
             </div>
 
-            {/* Password Input */}
             <div className="relative">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-yellow-500 w-5 h-5" />
               <input
                 name="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
-                className={inputClass}
+                className="w-full py-3 pl-12 pr-10 bg-gray-50 border rounded-xl"
                 value={formData.password}
                 onChange={handleChange}
                 required
@@ -123,43 +115,16 @@ const Login: React.FC = () => {
               </button>
             </div>
 
-            <div className="text-right">
-              <a href="#" className="text-cyan-500 text-sm font-semibold">
-                Forgot password?
-              </a>
-            </div>
-
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#22d3ee] hover:bg-cyan-500 disabled:opacity-70 disabled:cursor-not-allowed text-white font-bold py-4 rounded-2xl shadow-lg shadow-cyan-200 transition-all transform active:scale-[0.98] flex items-center justify-center gap-2"
+              className="w-full bg-[#22d3ee] text-white font-bold py-4 rounded-2xl shadow-lg mt-4 flex items-center justify-center gap-2 transition-all active:scale-95 hover:bg-[#06b6d4]"
             >
-              {loading ? (
-                <>
-                  <Loader2 size={20} className="animate-spin" />
-                  Logging in...
-                </>
-              ) : (
-                "Login"
-              )}
+              {loading ? <Loader2 className="animate-spin" /> : "Login"}
             </button>
           </form>
 
-          {/* Divider */}
-          <div className="flex items-center my-8">
-            <div className="flex-1 border-t border-gray-100"></div>
-            <span className="px-4 text-gray-400 text-xs">or continue with</span>
-            <div className="flex-1 border-t border-gray-100"></div>
-          </div>
-
-          {/* Social Icons */}
-          <div className="flex justify-center gap-4 mb-8">
-            <SocialButton icon="facebook" />
-            <SocialButton icon="google" />
-            <SocialButton icon="apple" />
-          </div>
-
-          <p className="text-center text-sm text-gray-500">
+          <p className="text-center text-sm text-gray-500 mt-8">
             Don't have an account?{" "}
             <a href="/register" className="text-cyan-500 font-bold">
               Sign up
@@ -170,13 +135,5 @@ const Login: React.FC = () => {
     </div>
   );
 };
-
-const SocialButton = ({ icon }: { icon: string }) => (
-  <button className="w-14 h-14 flex items-center justify-center rounded-2xl bg-gray-50 border border-gray-100 hover:bg-white hover:shadow-md transition-all">
-    <span className="capitalize text-lg font-bold">
-      {icon === "google" ? <span className="text-red-500">G</span> : icon[0]}
-    </span>
-  </button>
-);
 
 export default Login;

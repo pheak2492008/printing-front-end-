@@ -9,7 +9,6 @@ export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const { lang, setLang } = useLanguage();
-  const { isAuthenticated, logout } = useAuth();
   const [langOpen, setLangOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
@@ -27,11 +26,6 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
-
   return (
     <nav className="sticky top-0 z-50 w-full bg-[#f8f9f8]/90 backdrop-blur-md border-b border-gray-100">
       <div className="max-w-[1440px] mx-auto px-6 md:px-10 flex justify-between items-center h-20">
@@ -44,7 +38,7 @@ export default function Navbar() {
             <ShoppingBag size={20} color="white" strokeWidth={2.5} />
           </div>
           <span className="font-black text-[22px] text-[#1a1714] tracking-tight">
-            PrintCraft
+            BW Printing
           </span>
         </Link>
 
@@ -73,23 +67,6 @@ export default function Navbar() {
 
         {/* RIGHT SECTION */}
         <div className="flex items-center gap-3">
-          {!isAuthenticated ? (
-            <Link
-              to="/login"
-              className="hidden sm:flex items-center gap-2 px-5 py-2.5 text-[15px] font-bold text-gray-700 border border-gray-200 rounded-xl hover:bg-white transition-all"
-            >
-              {tx.signIn}
-            </Link>
-          ) : (
-            <button
-              onClick={handleLogout}
-              className="hidden sm:flex items-center gap-2 px-5 py-2.5 text-[15px] font-bold text-red-500 border border-red-100 rounded-xl hover:bg-red-50 transition-all"
-            >
-              <LogOut size={18} />
-              <span>Logout</span>
-            </button>
-          )}
-
           {/* LANGUAGE */}
           <div className="relative" ref={langRef}>
             <button
@@ -124,18 +101,6 @@ export default function Navbar() {
               </div>
             )}
           </div>
-
-          {/* --- PROFILE ICON BUTTON --- */}
-          <Link
-            to="/profile"
-            className={`flex items-center justify-center w-[44px] h-[44px] rounded-xl border transition-all shadow-sm ${
-              location.pathname === "/profile"
-                ? "bg-sky-50 border-sky-200 text-sky-600"
-                : "bg-white border-gray-200 text-gray-400 hover:border-sky-300 hover:text-sky-500"
-            }`}
-          >
-            <User size={22} />
-          </Link>
 
           {/* MOBILE TOGGLE */}
           <button

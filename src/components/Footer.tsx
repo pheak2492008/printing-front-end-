@@ -17,7 +17,7 @@ const footerTx = {
     desc: "ដំណោះស្រាយបោះពុម្ពកម្រិតខ្ពស់សម្រាប់តម្រូវការច្នៃប្រឌិតរបស់អ្នក។",
     links: "តំណភ្ជាប់រហ័ស",
     contact: "ទំនាក់ទំនង",
-    address: "ផ្លូវ ១៩៨៦, សែនសុខ, ភ្នំពេញ",
+    address: "ផ្លូវ សង្កាត់ទឹកថ្លា ខណ្ឌសែនសុខ រាជធានីភ្នំពេញ (ប្រទេសកម្ពុជា)",
     rights: "រក្សាសិទ្ធិគ្រប់យ៉ាងដោយ PrintCraft",
     home: "ទំព័រដើម",
     about: "អំពីយើង",
@@ -28,7 +28,8 @@ const footerTx = {
     desc: "Premium printing solutions for your creative needs. Precision and quality are our top priorities.",
     links: "Quick Links",
     contact: "Contact Info",
-    address: "St. 1986, Sen Sok, Phnom Penh",
+    address:
+      "Northbridge (St.), Sangkat Teuk Thla, Khan Sen Sok, Phnom Penh, Cambodia",
     rights: "All rights reserved. PrintCraft",
     home: "Home",
     about: "About Us",
@@ -39,7 +40,7 @@ const footerTx = {
     desc: "满足您创意需求的优质印刷解决方案。精准和质量是我们的首要任务。",
     links: "快速链接",
     contact: "联系信息",
-    address: "金边市，森速区，1986路",
+    address: "柬埔寨,金边市,森速区,德特拉分区,北桥街.",
     rights: "版权所有. PrintCraft",
     home: "首页",
     about: "关于我们",
@@ -88,7 +89,10 @@ export default function Footer() {
                   <path d="M2 12L12 17L22 12" />
                 </svg>
               </div>
-              <span className="font-bold text-2xl text-white">PrintCraft</span>
+              <span className="font-bold text-2xl text-white">
+                {" "}
+                BW Printing
+              </span>
             </div>
             <p className="text-slate-400 leading-relaxed font-medium max-w-sm">
               {t.desc}
@@ -161,13 +165,13 @@ export default function Footer() {
                 <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-sky-500/20 transition-colors">
                   <Phone size={16} className="text-sky-500" />
                 </div>
-                <span className="text-sm">+855 12 345 678</span>
+                <span className="text-sm">+855 12 862 424/69 862 424</span>
               </li>
               <li className="flex items-center gap-3 group justify-center md:justify-start">
                 <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-sky-500/20 transition-colors">
                   <Mail size={16} className="text-sky-500" />
                 </div>
-                <span className="text-sm">hello@printcraft.com</span>
+                <span className="text-sm">heangbunthoeun@yahoo.com</span>
               </li>
             </ul>
           </div>

@@ -4,9 +4,11 @@ import {
   Truck,
   MapPin,
   Navigation,
-  Home,
   CheckCircle2,
   Copy,
+  Phone,
+  FileImage,
+  User,
 } from "lucide-react";
 import { PAYMENT_DATA, type Tx, type OrderState } from "./orderTypes";
 
@@ -31,11 +33,12 @@ export default function OrderSidebar({
   const set = <K extends keyof OrderState>(key: K, val: OrderState[K]) =>
     setState((s) => ({ ...s, [key]: val }));
 
+  // Logic: Phone is now required for ALL orders to ensure shop can contact user
   const canConfirm =
     isAgreed &&
     state.activeBank !== null &&
-    (state.deliveryMethod === "pickup" ||
-      (state.deliveryAddress.trim() && state.deliveryPhone.trim()));
+    state.deliveryPhone.trim().length >= 8 && // Required phone
+    (state.deliveryMethod === "pickup" || state.deliveryAddress.trim());
 
   const handleShareLocation = () => {
     if (!navigator.geolocation) return;
@@ -56,8 +59,11 @@ export default function OrderSidebar({
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // Calculate extra files for the summary display
+  const extraFiles = Math.max(0, (state.uploadedFiles?.length || 0) - 1);
+
   return (
-    <div className="lg:col-span-4 lg:sticky lg:top-10 h-fit">
+    <div className="lg:col-span-4 lg:sticky lg:top-10 h-fit text-2xl font-black">
       <div className="bg-[#0f172a] rounded-[2.5rem] p-8 md:p-10 text-white shadow-2xl">
         <h3 className="text-2xl font-black mb-8 italic tracking-tighter">
           {tx.summary}
@@ -77,6 +83,20 @@ export default function OrderSidebar({
               {state.width}m × {state.length}m
             </span>
           </div>
+
+          {/* New: Extra File Fee Row */}
+          {extraFiles > 0 && (
+            <div className="flex justify-between text-sm animate-in fade-in slide-in-from-right-2">
+              <span className="text-slate-500 flex items-center gap-1.5">
+                <FileImage size={12} className="text-blue-400" /> Extra Files (
+                {extraFiles})
+              </span>
+              <span className="font-bold text-blue-400">
+                +${(extraFiles * 1).toFixed(2)}
+              </span>
+            </div>
+          )}
+
           {state.deliveryMethod === "delivery" && (
             <div className="flex justify-between text-sm">
               <span className="text-slate-500">{tx.deliveryFee}</span>
@@ -85,28 +105,51 @@ export default function OrderSidebar({
           )}
         </div>
 
-        {/* Delivery toggle */}
-        <div className="mb-6">
-          <p className="text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest">
-            {tx.receiving}
+        {/* Customer Information Group */}
+        <div className="mb-6 space-y-4">
+          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">
+            Customer Information
           </p>
-          <div className="grid grid-cols-2 gap-2 bg-slate-800/50 p-1 rounded-xl">
-            {(["pickup", "delivery"] as const).map((method) => (
-              <button
-                key={method}
-                onClick={() => set("deliveryMethod", method)}
-                className={`py-2.5 rounded-lg text-[10px] font-black transition-all ${
-                  state.deliveryMethod === method
-                    ? "bg-blue-600 text-white shadow-lg"
-                    : "text-slate-400"
-                }`}
-              >
-                {method === "pickup"
-                  ? tx.pickup.toUpperCase()
-                  : tx.delivery.toUpperCase()}
-              </button>
-            ))}
+
+          {/* Full Name Input */}
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-slate-400">
+              <User size={12} className="text-blue-400" />
+              <span className="text-[9px] font-bold uppercase tracking-widest text-2xl">
+                {tx.fullname}
+              </span>
+            </div>
+            <input
+              type="text"
+              value={state.fullname}
+              onChange={(e) => set("fullname", e.target.value)}
+              placeholder={tx.fullnamePlaceholder}
+              className=" w-full bg-slate-800/60 border border-white/10 rounded-2xl px-4 py-3 text-white text-xs font-semibold outline-none focus:border-blue-500/50 transition-all"
+            />
           </div>
+        </div>
+
+        {/* Universal Phone Number Input (Required for all orders) */}
+        <div className="mb-6 space-y-3">
+          <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-1.5">
+            <Phone size={11} className="text-blue-400" /> {tx.phoneNumber}
+          </p>
+          <input
+            type="tel"
+            value={state.deliveryPhone}
+            onChange={(e) => set("deliveryPhone", e.target.value)}
+            placeholder={tx.phonePlaceholder}
+            className={`w-full bg-slate-800/60 border rounded-2xl px-4 py-4 text-white text-xs font-semibold outline-none transition-all ${
+              !state.deliveryPhone || state.deliveryPhone.length < 8
+                ? " w-full bg-slate-800/60 border border-white/10 rounded-2xl px-4 py-3 text-white text-xs font-semibold outline-none focus:border-blue-500/50 transition-all "
+                : "border-white/10 focus:border-blue-500"
+            }`}
+          />
+          {!state.deliveryPhone && (
+            <p className="text-[9px] text-amber-400 font-bold italic ml-1">
+              * We need this to call you when finished
+            </p>
+          )}
         </div>
 
         {/* Payment method selector */}
@@ -140,15 +183,10 @@ export default function OrderSidebar({
                       {d.label}
                     </p>
                   </div>
-                  {isActive && (
-                    <div className="ml-auto w-4 h-4 rounded-full bg-blue-500 flex items-center justify-center">
-                      <Check size={10} className="text-white" strokeWidth={3} />
-                    </div>
-                  )}
                 </button>
               );
             })}
-            {/* Cash */}
+            {/* Cash Option */}
             <button
               onClick={() => set("activeBank", "CASH")}
               className={`flex items-center gap-2.5 px-4 py-3 rounded-2xl border-2 transition-all ${
@@ -170,36 +208,39 @@ export default function OrderSidebar({
                   Pay on Pickup
                 </p>
               </div>
-              {state.activeBank === "CASH" && (
-                <div className="ml-auto w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center">
-                  <Check size={10} className="text-white" strokeWidth={3} />
-                </div>
-              )}
             </button>
           </div>
-          {!state.activeBank && (
-            <p className="text-[10px] text-amber-400 font-bold mt-2 ml-1">
-              ⚠ Please select a payment method
-            </p>
-          )}
+        </div>
+        {/* Delivery toggle */}
+        <div className="mb-6">
+          <p className="text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest">
+            {tx.receiving}
+          </p>
+          <div className="grid grid-cols-2 gap-2 bg-slate-800/50 p-1 rounded-xl">
+            {(["pickup", "delivery"] as const).map((method) => (
+              <button
+                key={method}
+                onClick={() => set("deliveryMethod", method)}
+                className={`py-2.5 rounded-lg text-[10px] font-black transition-all ${
+                  state.deliveryMethod === method
+                    ? "bg-blue-600 text-white shadow-lg"
+                    : "text-slate-400"
+                }`}
+              >
+                {method === "pickup"
+                  ? tx.pickup.toUpperCase()
+                  : tx.delivery.toUpperCase()}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Estimated Total */}
-        <div className="flex justify-between items-end pt-5 border-t border-white/10 mb-6">
-          <span className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">
-            {tx.totalLabel}
-          </span>
-          <span className="text-5xl font-black text-blue-400 tracking-tighter">
-            ${total}
-          </span>
-        </div>
-
-        {/* Delivery address - below total */}
+        {/* Delivery Details Section (Address & GPS) */}
         {state.deliveryMethod === "delivery" && (
-          <div className="mb-6 space-y-3 animate-in fade-in slide-in-from-top-2 duration-300">
+          <div className="mb-6 space-y-3 animate-in fade-in slide-in-from-top-2">
             <div className="h-px bg-white/10 mb-4" />
             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
-              <MapPin size={11} className="text-blue-400" /> Delivery Details
+              <MapPin size={11} className="text-blue-400" /> Delivery Address
             </p>
 
             <button
@@ -221,27 +262,6 @@ export default function OrderSidebar({
               )}
             </button>
 
-            {state.locationCoords && (
-              <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl px-4 py-3 flex items-center justify-between">
-                <div>
-                  <p className="text-[8px] text-emerald-400 font-bold uppercase tracking-widest mb-0.5">
-                    GPS
-                  </p>
-                  <p className="text-[10px] text-white font-black">
-                    {state.locationCoords.lat.toFixed(5)},{" "}
-                    {state.locationCoords.lng.toFixed(5)}
-                  </p>
-                </div>
-                <button onClick={handleCopyCoords}>
-                  {copied ? (
-                    <Check size={14} className="text-emerald-400" />
-                  ) : (
-                    <Copy size={14} className="text-slate-400" />
-                  )}
-                </button>
-              </div>
-            )}
-
             <textarea
               value={state.deliveryAddress}
               onChange={(e) => set("deliveryAddress", e.target.value)}
@@ -249,20 +269,7 @@ export default function OrderSidebar({
               rows={2}
               className="w-full bg-slate-800/60 border border-white/10 rounded-2xl px-4 py-3 text-white text-xs font-semibold placeholder-slate-600 outline-none focus:border-blue-500/50 resize-none transition-all"
             />
-            <input
-              type="tel"
-              value={state.deliveryPhone}
-              onChange={(e) => set("deliveryPhone", e.target.value)}
-              placeholder={tx.phonePlaceholder}
-              className="w-full bg-slate-800/60 border border-white/10 rounded-2xl px-4 py-3 text-white text-xs font-semibold placeholder-slate-600 outline-none focus:border-blue-500/50 transition-all"
-            />
-            <input
-              type="text"
-              value={state.deliveryLandmark}
-              onChange={(e) => set("deliveryLandmark", e.target.value)}
-              placeholder={tx.landmarkPlaceholder}
-              className="w-full bg-slate-800/60 border border-white/10 rounded-2xl px-4 py-3 text-white text-xs font-semibold placeholder-slate-600 outline-none focus:border-blue-500/50 transition-all"
-            />
+
             <div className="flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 rounded-xl px-3 py-2">
               <Truck size={12} className="text-amber-400 shrink-0" />
               <p className="text-[9px] text-amber-300 font-bold">
@@ -271,6 +278,16 @@ export default function OrderSidebar({
             </div>
           </div>
         )}
+
+        {/* Estimated Total */}
+        <div className="flex justify-between items-end pt-5 border-t border-white/10 mb-6">
+          <span className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">
+            {tx.totalLabel}
+          </span>
+          <span className="text-5xl font-black text-blue-400 tracking-tighter">
+            ${total}
+          </span>
+        </div>
 
         {/* Agree checkbox */}
         <label className="flex items-start gap-3 mb-6 cursor-pointer group">

@@ -72,6 +72,8 @@ export const TRANSLATIONS = {
     deliveryAddress: "DELIVERY ADDRESS",
     addressPlaceholder: "Enter your full delivery address...",
     phoneNumber: "CONTACT PHONE",
+    fullname: "Full Name",
+    fullnamePlaceholder: "e.g. John Doe",
     phonePlaceholder: "e.g. 012 345 678",
     landmark: "LANDMARK / NOTE FOR DRIVER",
     landmarkPlaceholder: "e.g. Near the blue gate, 2nd floor...",
@@ -113,6 +115,8 @@ export const TRANSLATIONS = {
     stickerOptions: ["ស្ទីគ័រពណ៌ស", "ស្ទីគ័រថ្លា", "ស្ទីគ័រ 3M"],
     deliveryAddress: "អាសយដ្ឋានដឹកជញ្ជូន",
     addressPlaceholder: "បញ្ចូលអាសយដ្ឋានពេញលេញ...",
+    fullname: "ឈ្មោះពេញ",
+    fullnamePlaceholder: "ឧ. សុខ សុភា",
     phoneNumber: "លេខទូរស័ព្ទទំនាក់ទំនង",
     phonePlaceholder: "ឧ. ០១២ ៣៤៥ ៦៧៨",
     landmark: "ចំណុចសំគាល់ / សម្រាប់អ្នកដឹក",
@@ -156,6 +160,8 @@ export const TRANSLATIONS = {
     deliveryAddress: "送货地址",
     addressPlaceholder: "请输入完整的送货地址...",
     phoneNumber: "联系电话",
+    fullname: "姓名",
+    fullnamePlaceholder: "例如：张伟",
     phonePlaceholder: "例如：012 345 678",
     landmark: "地标 / 司机备注",
     landmarkPlaceholder: "例如：蓝色大门旁，二楼...",
@@ -191,6 +197,7 @@ export interface OrderState {
   activeBank: string | null;
   deliveryAddress: string;
   deliveryPhone: string;
+  fullname: string;
   deliveryLandmark: string;
   locationCoords: { lat: number; lng: number } | null;
   uploadedFiles: File[]; // Crucial for "1st Free, others Extra" logic

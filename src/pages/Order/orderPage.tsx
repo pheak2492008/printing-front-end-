@@ -21,7 +21,8 @@ export default function OrderPage() {
     deliveryPhone: "",
     deliveryLandmark: "",
     locationCoords: null,
-    uploadedFiles: [], // 1. Added this to track images
+    uploadedFiles: [],
+    fullname: "",
   });
 
   const [showPayment, setShowPayment] = useState(false);

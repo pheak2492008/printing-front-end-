@@ -188,6 +188,8 @@ export type Tx = typeof TRANSLATIONS.en;
  * Ensure uploadedFiles is an array of Files for multiple image support
  */
 export interface OrderState {
+  deliveryName: string;
+  inkChoice: string | number | readonly string[] | undefined;
   selectedBanner: number;
   selectedSticker: number;
   width: string;

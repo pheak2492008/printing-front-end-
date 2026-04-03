@@ -1,165 +1,110 @@
-import React, { useState } from "react";
-import { ArrowLeft, Check, Copy, Smartphone } from "lucide-react";
-import { PAYMENT_DATA, type Tx } from "../../components/orderTypes";
+import { useState } from "react";
+import { CheckCircle2, Loader2 } from "lucide-react";
 
-interface Props {
-  bank: string;
-  total: string;
-  tx: Tx;
-  onBack: () => void;
-  onDone: () => void;
-}
-
-export default function PaymentScreen({
-  bank,
-  total,
-  tx,
-  onBack,
-  onDone,
-}: Props) {
-  const [copied, setCopied] = useState(false);
+export default function PaymentScreen({ total, state, onBack, onDone }: any) {
+  const [loading, setLoading] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
-  const data = PAYMENT_DATA[bank as keyof typeof PAYMENT_DATA];
 
-  const handleCopy = (text: string) => {
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleFinalSubmit = async () => {
+    setLoading(true);
+    const formData = new FormData();
+
+    // Mapping state to the exact @RequestParams in Java
+    formData.append("fullName", state.fullname || "Guest");
+    formData.append("phoneNumber", state.deliveryPhone || "000");
+
+    // Ensure these are parsed as floats/numbers first
+    formData.append("width", parseFloat(state.width).toString());
+    formData.append("length", parseFloat(state.length).toString());
+
+    // Logic: 1 for Banner, 2 for Sticker (Matches your material IDs)
+    const mId = state.selectedBanner !== -1 ? 1 : 2;
+    formData.append("materialId", mId.toString());
+
+    formData.append("inkChoice", state.inkChoice || "Standard");
+    formData.append("dpiQuality", "720dpi");
+    formData.append("hasGrommets", "false");
+    formData.append("hasHems", "false");
+
+    // ✅ Add description so users can order without an image
+    formData.append("description", state.description || "");
+
+    // ✅ Only append file if the user actually uploaded one
+    if (state.uploadedFiles && state.uploadedFiles[0]) {
+      formData.append("file", state.uploadedFiles[0]);
+    }
+
+    try {
+      const response = await fetch("http://localhost:8081/api/orders/create", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        setConfirmed(true); // This shows the SUCCESS! screen
+      } else {
+        const errorText = await response.text();
+        console.error("Server Error:", errorText);
+        alert("Server Error: Check your Java Console for red errors.");
+      }
+    } catch (error) {
+      alert("Network Error: Is the Spring Boot app running?");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  /* ── Success screen ── */
   if (confirmed) {
     return (
-      <div className="fixed inset-0 bg-[#0f172a] flex flex-col items-center justify-center z-50 p-8">
-        <div className="text-center max-w-sm">
-          <div className="w-24 h-24 rounded-full bg-emerald-500/20 border-2 border-emerald-500 flex items-center justify-center mx-auto mb-6 animate-pulse">
-            <Check size={40} className="text-emerald-400" strokeWidth={3} />
-          </div>
-          <h2 className="text-3xl font-black text-white tracking-tighter mb-3">
-            Order Confirmed!
-          </h2>
-          <p className="text-slate-400 text-sm mb-8">
-            Your payment is being verified. We'll contact you shortly.
-          </p>
-          <button
-            onClick={onDone}
-            className="px-8 py-4 bg-blue-600 text-white font-black rounded-2xl hover:bg-blue-500 transition-all"
-          >
-            Back to Home
-          </button>
-        </div>
+      <div className="fixed inset-0 bg-[#0f172a] flex flex-col items-center justify-center z-50 p-6 text-center">
+        <CheckCircle2
+          size={100}
+          className="text-emerald-500 mb-6 animate-bounce"
+        />
+        <h2 className="text-4xl font-black text-white italic">SUCCESS!</h2>
+        <p className="text-slate-400 mt-2">
+          Order sent to the Admin Dashboard.
+        </p>
+        <button
+          onClick={onDone}
+          className="mt-10 px-10 py-4 bg-blue-600 text-white font-black rounded-2xl"
+        >
+          CONTINUE
+        </button>
       </div>
     );
   }
 
   return (
-    <div className="fixed inset-0 bg-[#0f172a] z-50 overflow-y-auto">
-      {/* Sticky header */}
-      <div className="sticky top-0 z-10 bg-[#0f172a]/90 backdrop-blur-xl border-b border-white/5 px-6 py-4 flex items-center gap-4">
-        <button
-          onClick={onBack}
-          className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/10 transition-all"
-        >
-          <ArrowLeft size={18} className="text-white" />
-        </button>
-        <div>
-          <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
-            {tx.paymentScreen}
-          </p>
-          <p className="text-white font-black text-lg leading-tight">
-            {data.label}
-          </p>
-        </div>
-      </div>
+    <div className="min-h-screen bg-[#0f172a] p-6 flex flex-col items-center justify-center">
+      <div className="max-w-md w-full bg-white rounded-4xl p-8 shadow-2xl text-center">
+        <h3 className="text-slate-400 font-bold uppercase text-[10px] tracking-widest">
+          Total Amount
+        </h3>
+        <p className="text-5xl font-black text-slate-900 mt-2 mb-8">${total}</p>
 
-      <div className="max-w-sm mx-auto px-4 py-8 space-y-5">
-        {/* Total pill */}
-        <div className="bg-white/5 border border-white/10 rounded-2xl px-6 py-4 flex items-center justify-between">
-          <span className="text-slate-400 text-xs font-bold uppercase tracking-widest">
-            {tx.totalToPay}
-          </span>
-          <span className="text-3xl font-black text-blue-400 tracking-tighter">
-            ${total}
-          </span>
-        </div>
-
-        {/* ── CLEAN KHQR CARD ── */}
-        <div className="rounded-[2rem] overflow-hidden shadow-2xl bg-white">
-          {/* KHQR red header */}
-          <div className="bg-[#d0021b] px-6 py-4 flex items-center justify-center">
-            <span className="text-white font-black text-2xl tracking-[0.15em]">
+        {/* KHQR Placeholder */}
+        <div className="bg-slate-900 p-6 rounded-3xl mb-8">
+          <div className="aspect-square bg-white rounded-xl flex items-center justify-center">
+            <div className="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center text-white font-black">
               KHQR
-            </span>
-          </div>
-
-          <div className="px-6 pt-5 pb-2">
-            {/* Account name & amount - mirrors real KHQR layout */}
-            <p className="font-black text-slate-900 text-base">{data.name}</p>
-            <div className="flex items-baseline gap-1.5 mt-1 mb-4">
-              <span className="text-slate-400 text-sm">$</span>
-              <span className="text-3xl font-black text-slate-900">
-                {total}
-              </span>
-              <span className="text-slate-400 text-xs font-bold">USD</span>
             </div>
-
-            {/* Dashed divider */}
-            <div className="border-t-2 border-dashed border-slate-200 mb-5" />
-          </div>
-
-          {/* QR image — full width, no clipping, no box */}
-          <div className="px-6 pb-6">
-            <img
-              src={data.qr}
-              alt={`${bank} QR Code`}
-              className="w-full h-auto rounded-2xl"
-              style={{ imageRendering: "crisp-edges" }}
-            />
           </div>
         </div>
 
-        {/* Copy account name */}
-        <div className="bg-white/5 border border-white/10 rounded-2xl px-5 py-4 flex items-center justify-between">
-          <div>
-            <p className="text-[9px] text-slate-500 font-black uppercase tracking-widest mb-0.5">
-              {tx.accountName}
-            </p>
-            <p className="text-sm font-black text-white uppercase">
-              {data.name}
-            </p>
-          </div>
-          <button
-            onClick={() => handleCopy(data.name)}
-            className="w-9 h-9 rounded-xl flex items-center justify-center transition-all bg-white/10 hover:bg-white/20"
-          >
-            {copied ? (
-              <Check size={14} className="text-emerald-400" strokeWidth={3} />
-            ) : (
-              <Copy size={14} className="text-slate-400" />
-            )}
-          </button>
-        </div>
-
-        {/* Instruction */}
-        <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl px-5 py-4 flex gap-3 items-start">
-          <Smartphone size={15} className="text-blue-400 mt-0.5 shrink-0" />
-          <p className="text-[11px] text-blue-300 font-semibold leading-relaxed">
-            {tx.paymentNote}
-          </p>
-        </div>
-
-        {/* Confirm button */}
         <button
-          onClick={() => setConfirmed(true)}
-          className="w-full py-5 rounded-2xl font-black text-base text-white transition-all active:scale-95 shadow-xl"
-          style={{
-            background: `linear-gradient(135deg, ${data.color}, ${data.color}bb)`,
-          }}
+          onClick={handleFinalSubmit}
+          disabled={loading}
+          className="w-full py-5 bg-blue-600 text-white font-black rounded-2xl flex items-center justify-center gap-3"
         >
-          {tx.paymentDone} ✓
+          {loading ? (
+            <>
+              <Loader2 className="animate-spin" size={20} /> SENDING...
+            </>
+          ) : (
+            "I HAVE PAID ✓"
+          )}
         </button>
-
-        <div className="h-4" />
       </div>
     </div>
   );

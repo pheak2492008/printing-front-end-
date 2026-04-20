@@ -19,7 +19,6 @@ const t = {
     popularSub: "រកមើលផលិតផលបោះពុម្ពដ៏ល្អបំផុតរបស់យើង",
     cats: ["បោះពុម្ព Banner", "បោះពុម្ព Stickers", "បោះពុម្ព Sticker Logos"],
     learnMore: "ស្វែងយល់បន្ថែម",
-    // Mapping Database productId to Khmer text
     productTitles: {
       1: {
         title: "បដា Vinyl ខាងក្រៅ",
@@ -44,7 +43,7 @@ const t = {
     popularSub: "Explore our best-selling print items",
     cats: ["Print Banners", "Print Stickers", "Print Sticker Logos"],
     learnMore: "Learn More",
-    productTitles: {}, // Uses database default (English)
+    productTitles: {},
   },
   zh: {
     heroTitle: "为您的下一个大项目发现",
@@ -55,7 +54,6 @@ const t = {
     popularSub: "探索我们最畅销的印刷项目",
     cats: ["横幅印刷", "贴纸印刷", "标志贴纸印刷"],
     learnMore: "了解更多",
-    // Mapping Database productId to Chinese text
     productTitles: {
       1: { title: "乙烯基户外横幅", sub: "高品质、耐用的户外广告横幅。" },
       2: { title: "定制模切贴纸", sub: "防水防紫外线定制形状贴纸。" },
@@ -99,40 +97,63 @@ export default function InspirationGallery() {
   }, [activeCategory]);
 
   return (
-    <div className="bg-white min-h-screen ">
-      {/* Marquee Strip */}
-      <div className="w-full overflow-hidden bg-slate-900 py-4">
-        <div className="flex gap-12 whitespace-nowrap animate-marquee">
-          {marqueeLogos.concat(marqueeLogos).map((name, i) => (
+    <div className="bg-white min-h-screen">
+      {/* SLIM MARQUEE STRIP 
+          - Changed py-4 to py-2 (matches your screenshot)
+          - Doubled the map for a seamless infinite loop
+          - Increased gap for "running away" effect
+      */}
+      <div
+        className="w-full overflow-hidden border-b border-white/5 shadow-sm"
+        style={{ background: "linear-gradient(90deg,#0f172a,#1e3a5f,#0f172a)" }}
+      >
+        <div
+          className="flex py-4 whitespace-nowrap"
+          style={{
+            animation: "marquee 35s linear infinite",
+            width: "max-content",
+            gap: "8rem", // Significant space between items
+          }}
+        >
+          {/* Mapping twice allows for a smooth loop with translateX(-50%) */}
+          {[...marqueeLogos, ...marqueeLogos].map((name, i) => (
             <span
               key={i}
-              className="text-white/60 font-bold text-sm uppercase tracking-widest"
+              className="text-white/40 font-bold text-[15px] uppercase tracking-[0.25em] px-4"
             >
               {name}
             </span>
           ))}
         </div>
+        <style>{`
+          @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+        `}</style>
       </div>
 
       {/* Hero Section */}
-      <section className="w-full bg-slate-800 text-white py-14">
+      <section className="w-full bg-[#1e293b] text-white py-14">
         <div className="max-w-[1280px] mx-auto px-6 flex flex-col md:flex-row items-center gap-10">
           <div className="flex-1">
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
-              {tx.heroTitle} <span>{tx.heroEm}</span>
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
+              {tx.heroTitle} <br />
+              <span className="text-blue-400">{tx.heroEm}</span>
             </h1>
-            <p className="text-blue-200 mb-8">{tx.heroSub}</p>
+            <p className="text-slate-400 text-lg mb-8">{tx.heroSub}</p>
             <Link
               to="/order"
-              className="px-8 py-3 bg-red-500 hover:bg-red-600 rounded-lg font-bold"
+              className="px-8 py-3 bg-red-500 hover:bg-red-600 rounded-lg font-bold transition-colors inline-block"
             >
               {tx.getStarted}
             </Link>
           </div>
-          <div className="w-[380px] h-[300px] rounded-2xl overflow-hidden shadow-2xl">
+          <div className="w-full md:w-[450px] h-[320px] rounded-2xl overflow-hidden shadow-2xl border border-white/10">
             <img
               src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&q=80"
               className="w-full h-full object-cover"
+              alt="Hero Banner"
             />
           </div>
         </div>
@@ -153,10 +174,10 @@ export default function InspirationGallery() {
             <button
               key={i}
               onClick={() => setActiveCategory(i)}
-              className={`px-6 py-2 rounded-full border font-semibold text-sm transition-all ${
+              className={`px-6 py-2 rounded-full border font-semibold text-sm transition-all whitespace-nowrap ${
                 activeCategory === i
-                  ? "bg-blue-600 text-white shadow-md"
-                  : "bg-white text-gray-600"
+                  ? "bg-blue-600 text-white border-blue-600 shadow-md"
+                  : "bg-white text-gray-600 border-gray-200 hover:border-blue-300"
               }`}
             >
               {cat}
@@ -170,9 +191,8 @@ export default function InspirationGallery() {
             Loading products...
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {products.map((product) => {
-              // CHECK FOR TRANSLATION OVERRIDE
               // @ts-ignore
               const localTx = tx.productTitles?.[product.productId];
 
@@ -182,30 +202,33 @@ export default function InspirationGallery() {
                   onClick={() => navigate(`/detail/${product.id}`)}
                   className="group cursor-pointer bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all"
                 >
-                  <div className="relative h-[220px] bg-gray-100">
+                  <div className="relative h-[240px] bg-gray-50 overflow-hidden">
                     <img
                       src={`${API_BASE_URL}${product.imageUrl}`}
                       alt={product.title}
-                      className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
-                    <span className="absolute top-3 left-3 text-[10px] font-bold text-white px-3 py-1 rounded-full bg-blue-600">
-                      {product.stock > 0 ? "IN STOCK" : "OUT OF STOCK"}
-                    </span>
+                    <div className="absolute top-3 left-3">
+                      <span
+                        className={`text-[10px] font-bold text-white px-3 py-1 rounded-full ${product.stock > 0 ? "bg-green-500" : "bg-red-500"}`}
+                      >
+                        {product.stock > 0 ? "IN STOCK" : "OUT OF STOCK"}
+                      </span>
+                    </div>
                   </div>
 
-                  <div className="p-5">
-                    {/* Use local translation if available, otherwise fallback to DB (English) */}
-                    <h3 className="font-bold text-lg text-gray-900 mb-1">
+                  <div className="p-6">
+                    <h3 className="font-bold text-lg text-gray-900 mb-2">
                       {localTx ? localTx.title : product.title}
                     </h3>
-                    <p className="text-gray-500 text-sm mb-4 line-clamp-2">
+                    <p className="text-gray-500 text-sm mb-6 line-clamp-2 h-10">
                       {localTx ? localTx.sub : product.description}
                     </p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-blue-600 font-bold">
+                    <div className="flex items-center justify-between border-t pt-4">
+                      <span className="text-blue-600 font-bold text-xl">
                         ${product.price.toFixed(2)}
                       </span>
-                      <button className="px-4 py-2 bg-blue-600 text-white rounded-lg text-xs hover:bg-blue-700">
+                      <button className="px-4 py-2 bg-slate-900 text-white rounded-lg text-xs font-bold hover:bg-blue-600 transition-colors">
                         {tx.learnMore}
                       </button>
                     </div>
@@ -218,7 +241,7 @@ export default function InspirationGallery() {
 
         {!loading && products.length === 0 && (
           <div className="text-center py-20 text-gray-400">
-            No products found.
+            No products found in this category.
           </div>
         )}
       </section>

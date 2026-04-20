@@ -6,10 +6,9 @@ import Reviews from "./reviwe";
 
 /* 1. CONFIGURATION */
 const API_BASE_URL = "http://localhost:8081";
-// Mapping buttons to your Database productId (1: Banners, 2: Stickers, 3: Logos)
 const categoryIdMap = [1, 2, 3];
 
-/* 2. TRANSLATIONS (Simplified for space) */
+/* 2. TRANSLATIONS WITH PRODUCT OVERRIDES */
 const t = {
   km: {
     heroTitle: "រកឃើញដំណោះស្រាយការបោះពុម្ពសម្រាប់",
@@ -20,6 +19,21 @@ const t = {
     popularSub: "រកមើលផលិតផលបោះពុម្ពដ៏ល្អបំផុតរបស់យើង",
     cats: ["បោះពុម្ព Banner", "បោះពុម្ព Stickers", "បោះពុម្ព Sticker Logos"],
     learnMore: "ស្វែងយល់បន្ថែម",
+    // Mapping Database productId to Khmer text
+    productTitles: {
+      1: {
+        title: "បដា Vinyl ខាងក្រៅ",
+        sub: "ដំណោះស្រាយបោះពុម្ពធន់នឹងអាកាសធាតុ",
+      },
+      2: {
+        title: "ស្ទីគ័រ កាត់តាមរាង",
+        sub: "ស្ទីគ័រមិនជ្រាបទឹក និងការពារកាំរស្មីយូវី",
+      },
+      3: {
+        title: "ឡូហ្គោ ស្ទីគ័រម៉ាក",
+        sub: "សម្រាប់វេចខ្ចប់ និងបិទស្លាកផលិតផល",
+      },
+    },
   },
   en: {
     heroTitle: "Discover professional printing solutions for your",
@@ -30,6 +44,23 @@ const t = {
     popularSub: "Explore our best-selling print items",
     cats: ["Print Banners", "Print Stickers", "Print Sticker Logos"],
     learnMore: "Learn More",
+    productTitles: {}, // Uses database default (English)
+  },
+  zh: {
+    heroTitle: "为您的下一个大项目发现",
+    heroEm: "专业的印刷解决方案",
+    heroSub: "浏览我们精心挑选的优质印刷产品系列——从横幅到名片。",
+    getStarted: "立即开始",
+    popularProducts: "热门印刷产品",
+    popularSub: "探索我们最畅销的印刷项目",
+    cats: ["横幅印刷", "贴纸印刷", "标志贴纸印刷"],
+    learnMore: "了解更多",
+    // Mapping Database productId to Chinese text
+    productTitles: {
+      1: { title: "乙烯基户外横幅", sub: "高品质、耐用的户外广告横幅。" },
+      2: { title: "定制模切贴纸", sub: "防水防紫外线定制形状贴纸。" },
+      3: { title: "品牌标志贴纸", sub: "用于包装和产品标签的预切贴纸。" },
+    },
   },
 };
 
@@ -45,7 +76,7 @@ export default function InspirationGallery() {
   const navigate = useNavigate();
   const { lang } = useLanguage();
   const [activeCategory, setActiveCategory] = useState(0);
-  const [products, setProducts] = useState<any[]>([]); // Data from Backend
+  const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   const tx = t[lang as keyof typeof t] || t.en;
@@ -55,7 +86,6 @@ export default function InspirationGallery() {
     setLoading(true);
     const categoryId = categoryIdMap[activeCategory];
 
-    // Using your custom API endpoint
     fetch(`${API_BASE_URL}/api/v1/products/category/${categoryId}`)
       .then((res) => res.json())
       .then((data) => {
@@ -66,7 +96,7 @@ export default function InspirationGallery() {
         console.error("Fetch Error:", err);
         setLoading(false);
       });
-  }, [activeCategory]); // Re-fetch whenever user clicks a new button
+  }, [activeCategory]);
 
   return (
     <div className="bg-white min-h-screen ">
@@ -141,49 +171,54 @@ export default function InspirationGallery() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {products.map((product) => (
-              <div
-                key={product.id}
-                onClick={() => navigate(`/detail/${product.id}`)}
-                className="group cursor-pointer bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all"
-              >
-                <div className="relative h-[220px] bg-gray-100">
-                  {/* Dynamic Image URL from Backend */}
-                  <img
-                    src={`${API_BASE_URL}${product.imageUrl}`}
-                    alt={product.title}
-                    className="w-full h-full object-cover transition-transform group-hover:scale-105"
-                  />
-                  <span className="absolute top-3 left-3 text-[10px] font-bold text-white px-3 py-1 rounded-full bg-blue-600">
-                    {product.stock > 0 ? "IN STOCK" : "OUT OF STOCK"}
-                  </span>
-                </div>
+            {products.map((product) => {
+              // CHECK FOR TRANSLATION OVERRIDE
+              // @ts-ignore
+              const localTx = tx.productTitles?.[product.productId];
 
-                <div className="p-5">
-                  <h3 className="font-bold text-lg text-gray-900 mb-1">
-                    {product.title}
-                  </h3>
-                  <p className="text-gray-500 text-sm mb-4 line-clamp-2">
-                    {product.description}
-                  </p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-blue-600 font-bold">
-                      ${product.price.toFixed(2)}
+              return (
+                <div
+                  key={product.id}
+                  onClick={() => navigate(`/detail/${product.id}`)}
+                  className="group cursor-pointer bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all"
+                >
+                  <div className="relative h-[220px] bg-gray-100">
+                    <img
+                      src={`${API_BASE_URL}${product.imageUrl}`}
+                      alt={product.title}
+                      className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                    />
+                    <span className="absolute top-3 left-3 text-[10px] font-bold text-white px-3 py-1 rounded-full bg-blue-600">
+                      {product.stock > 0 ? "IN STOCK" : "OUT OF STOCK"}
                     </span>
-                    <button className="px-4 py-2 bg-blue-600 text-white rounded-lg text-xs hover:bg-blue-700">
-                      {tx.learnMore}
-                    </button>
+                  </div>
+
+                  <div className="p-5">
+                    {/* Use local translation if available, otherwise fallback to DB (English) */}
+                    <h3 className="font-bold text-lg text-gray-900 mb-1">
+                      {localTx ? localTx.title : product.title}
+                    </h3>
+                    <p className="text-gray-500 text-sm mb-4 line-clamp-2">
+                      {localTx ? localTx.sub : product.description}
+                    </p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-blue-600 font-bold">
+                        ${product.price.toFixed(2)}
+                      </span>
+                      <button className="px-4 py-2 bg-blue-600 text-white rounded-lg text-xs hover:bg-blue-700">
+                        {tx.learnMore}
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 
-        {/* If the category is empty in DB */}
         {!loading && products.length === 0 && (
           <div className="text-center py-20 text-gray-400">
-            No products found in this category.
+            No products found.
           </div>
         )}
       </section>

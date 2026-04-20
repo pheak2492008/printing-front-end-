@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useLanguage } from "../../context/LanguageContext";
 import Partner from "./partner";
 import Reviews from "./reviwe";
-
 /* 1. CATEGORY KEYS (Logic Only - matches product.category) */
 const categories = ["banners", "carts", "business_cards", "posters", "flyers"];
 

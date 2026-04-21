@@ -1,4 +1,3 @@
-// src/locales/translations.ts
 export type LangKey = "km" | "en" | "zh";
 
 export const languages = [
@@ -7,84 +6,83 @@ export const languages = [
   { code: "zh" as LangKey, label: "中文", flag: "🇨🇳" },
 ];
 
+export interface ProductOverride {
+  title: string;
+  sub: string;
+  desc: string;
+}
+
 export const t = {
   km: {
     signIn: "ចូល",
     getStarted: "ចាប់ផ្ដើម",
+    loading: "កំពុងផ្ទុក...",
+    notFound: "រកមិនឃើញផលិតផល",
+    back: "ត្រឡប់ក្រោយ",
+    details: "ព័ត៌មានលម្អិត",
+    addToCart: "បន្ថែមទៅកន្ត្រក",
     nav: {
       home: "ទំព័រដើម",
       about: "អំពីយើង",
       faq: "សំណួរ",
       order: "ការបញ្ជាទិញ",
       profile: "ប្រវត្តិរូប",
-      logout: "ចាកចេញ", // ✅ Added
+      logout: "ចាកចេញ",
     },
-    eyebrow: "វិចិត្រសាលការបំផុស",
-    heroTitle: "រកឃើញដំណោះស្រាយការបោះពុម្ពសម្រាប់",
-    heroEm: "គម្រោងធំបន្ទាប់របស់អ្នក",
-    heroSub: "រកមើលបណ្តុំផលិតផលបោះពុម្ពប្រណីតរបស់យើង — ពីបដារហូតដល់នាមប័ណ្ណ។",
-    cats: ["បដា", "រទេះ", "នាមប័ណ្ណ", "ផូស្ទែរ", "ខិត្តប័ណ្ណ"],
-    learnMore: "ស្វែងយល់បន្ថែម",
-    productItems: [
-      { title: "បដា Vinyl ខាងក្រៅ", sub: "ដំណោះស្រាយបោះពុម្ពធន់នឹងអាកាសធាតុ" },
-      { title: "បដា Roll-Up", sub: "អេក្រង់ចល័តសម្រាប់ព្រឹត្តិការណ៍" },
-      { title: "រទេះតាំងពិព័រណ៍", sub: "រទេះបង្ហាញបញ្ឈរ" },
-      { title: "នាមប័ណ្ណលំដាប់ខ្ពស់", sub: "ការបញ្ចប់បែបប្រណីត" },
-      { title: "ផូស្ទែរព្រឹត្តិការណ៍", sub: "ពណ៌រស់រវើក" },
-      { title: "ខិត្តប័ណ្ណផ្សព្វផ្សាយ", sub: "ការរចនាដិត" },
-    ],
+    productOverrides: {
+      3: {
+        title: "បដា Vinyl ខាងក្រៅ",
+        sub: "ដំណោះស្រាយបោះពុម្ពធន់នឹងអាកាសធាតុ",
+        desc: "បដា Vinyl កម្រាស់ 13oz កម្រិតធ្ងន់ ធន់នឹងអាកាសធាតុ និងល្អឥតខ្ចោះសម្រាប់ព្រឹត្តិការណ៍ក្រៅផ្ទះ។ បដាលំដាប់អាជីពនេះត្រូវបានបោះពុម្ពដោយទឹកថ្នាំការពារកាំរស្មី UV ដើម្បីការពារការស្លេកពណ៌។ វាមានថ្នេរដែលផ្សារភ្ជាប់ដោយកំដៅសម្រាប់ភាពធន់បន្ថែម និងមានប្រឡៅដែកសម្រាប់ងាយស្រួលក្នុងការព្យួរ។ សមស្របបំផុតសម្រាប់ដាក់នៅមុខហាង ការបើកសម្ពោធ និងការប្រារព្ធពិធីផ្សេងៗនៅខាងក្រៅ។",
+      },
+    } as Record<number, ProductOverride>,
   },
   en: {
     signIn: "Sign In",
     getStarted: "Get Started",
+    loading: "Loading...",
+    notFound: "Product not found",
+    back: "Back",
+    details: "Product Details",
+    addToCart: "Add to Cart",
     nav: {
       home: "Home",
       about: "About",
       faq: "FAQ",
       order: "Order",
       profile: "Profile",
-      logout: "Logout", // ✅ Added
+      logout: "Logout",
     },
-    eyebrow: "Inspiration Gallery",
-    heroTitle: "Discover printing solutions for your",
-    heroEm: "next big project",
-    heroSub:
-      "Browse our curated collection of premium print products — from banners to business cards.",
-    cats: ["Banners", "Carts", "Business Cards", "Posters", "Flyers"],
-    learnMore: "Learn More",
-    productItems: [
-      { title: "Vinyl Outdoor Banners", sub: "Weather-resistant solutions" },
-      { title: "Roll-Up Banners", sub: "Portable displays for events" },
-      { title: "Exhibition Cart", sub: "Vertical display cart" },
-      { title: "Premium Business Cards", sub: "Luxury finishes" },
-      { title: "Event Posters", sub: "Vibrant colors" },
-      { title: "Promotional Flyers", sub: "Bold designs" },
-    ],
+    productOverrides: {
+      3: {
+        title: "Vinyl Outdoor Banner",
+        sub: "Weather-resistant solutions",
+        desc: "Heavy-duty 13oz vinyl, weather-resistant, and perfect for outdoor events. This professional-grade banner is printed with UV-resistant inks to prevent fading. It features heat-welded hems for extra durability and optional metal grommets for easy hanging.",
+      },
+    } as Record<number, ProductOverride>,
   },
   zh: {
     signIn: "登录",
     getStarted: "开始使用",
+    loading: "正在加载...",
+    notFound: "找不到产品",
+    back: "返回",
+    details: "产品详情",
+    addToCart: "加入购物车",
     nav: {
       home: "首页",
       about: "关于我们",
       faq: "常见问题",
       order: "订单",
       profile: "个人资料",
-      logout: "退出登录", // ✅ Added
+      logout: "退出登录",
     },
-    eyebrow: "灵感画廊",
-    heroTitle: "发现适合您的印刷解决方案",
-    heroEm: "下一个大项目",
-    heroSub: "浏览我们精心策划的优质印刷产品系列——从横幅到名片。",
-    cats: ["横幅", "货车", "名片", "海报", "传单"],
-    learnMore: "了解更多",
-    productItems: [
-      { title: "乙烯基户外横幅", sub: "耐候印刷解决方案" },
-      { title: "易拉宝横幅", sub: "活动便携式展示" },
-      { title: "展车", sub: "垂直展示车" },
-      { title: "高档名片", sub: "豪华饰面" },
-      { title: "活动海报", sub: "鲜艳的色彩" },
-      { title: "宣传传单", sub: "大胆的设计" },
-    ],
+    productOverrides: {
+      3: {
+        title: "乙烯基户外横幅",
+        sub: "耐候印刷解决方案",
+        desc: "高品质 13 盎司乙烯基，防晒防水，非常适合户外活动。采用抗紫外线墨水印刷，防止褪色。具有热焊接边，经久耐用。",
+      },
+    } as Record<number, ProductOverride>,
   },
 };

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   ChevronLeft,
   ShoppingCart,
@@ -159,13 +159,14 @@ export default function BannerDetailPage() {
               ))}
             </div>
           </div>
-
-          <button className="mt-12 w-full bg-blue-600 text-white px-10 py-5 rounded-2xl font-bold flex items-center justify-center gap-4 active:scale-95 transition-all shadow-xl shadow-blue-100 hover:bg-blue-700">
-            <ShoppingCart size={24} />
-            <span className={lang === "km" ? "font-km text-xl" : "text-lg"}>
-              {tx.detail?.addToCart}
-            </span>
-          </button>
+          <Link to="/order" className="self-stretch md:self-auto">
+            <button className="mt-12 w-full bg-blue-600 text-white px-10 py-5 rounded-2xl font-bold flex items-center justify-center gap-4 active:scale-95 transition-all shadow-xl shadow-blue-100 hover:bg-blue-700">
+              <ShoppingCart size={24} />
+              <span className={lang === "km" ? "font-km text-xl" : "text-lg"}>
+                {tx.detail?.addToCart}
+              </span>
+            </button>
+          </Link>
         </div>
       </div>
 

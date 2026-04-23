@@ -19,6 +19,7 @@ import Detail from "./pages/Detail/detail";
 import About from "./pages/About/about";
 import OrderPage from "./pages/Order/orderPage";
 import FAQ from "./pages/Faq/faqPage";
+import RatingPage from "./pages/Home/rating";
 
 function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const location = useLocation();
@@ -66,6 +67,7 @@ export default function App() {
               <Route path="/detail/:id" element={<Detail />} />
               <Route path="/order" element={<OrderPage />} />
               <Route path="/faq" element={<FAQ />} />
+              <Route path="/rating" element={<RatingPage />} />
 
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>

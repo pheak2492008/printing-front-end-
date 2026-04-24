@@ -35,10 +35,13 @@ export default function PaymentScreen({ total, state, onBack, onDone }: any) {
     }
 
     try {
-      const response = await fetch("http://localhost:8081/api/orders/create", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://printing-back-end.onrender.com/api/orders/create",
+        {
+          method: "POST",
+          body: formData,
+        },
+      );
 
       if (response.ok) {
         setConfirmed(true); // This shows the SUCCESS! screen

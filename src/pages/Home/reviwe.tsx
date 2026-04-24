@@ -10,13 +10,13 @@ export default function HomeReviews() {
 
   useEffect(() => {
     // Fetch summary data for the stats display
-    fetch("https://printing-back-end.onrender.com/api/v1/reviews/summary")
+    fetch("http://localhost:8081/api/v1/reviews/summary")
       .then((res) => res.json())
       .then(setStats)
       .catch((err) => console.error("Stats fetch failed", err));
 
     // Fetch all reviews
-    fetch("https://printing-back-end.onrender.com/api/v1/reviews/all")
+    fetch("http://localhost:8081/api/v1/reviews/all")
       .then((res) => res.json())
       .then(setReviews)
       .catch((err) => console.error("Reviews fetch failed", err));

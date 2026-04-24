@@ -11,7 +11,7 @@ import {
 import { useLanguage } from "../../context/LanguageContext";
 import { t as translationData } from "../../locales/translateDetail";
 
-const API_BASE_URL = "https://printing-back-end.onrender.com";
+const API_BASE_URL = "http://localhost:8081";
 
 export default function BannerDetailPage() {
   const { id } = useParams<{ id: string }>();

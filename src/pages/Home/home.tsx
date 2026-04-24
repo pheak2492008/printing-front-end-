@@ -5,7 +5,7 @@ import Partner from "./partner";
 import Reviews from "./reviwe";
 
 /* 1. CONFIGURATION */
-const API_BASE_URL = "https://printing-back-end.onrender.com/api"; // Update with your actual backend URL
+const API_BASE_URL = "https://printing-back-end.onrender.com"; // Update with your actual backend URL
 const categoryIdMap = [1, 2, 3];
 
 /* 2. TRANSLATIONS */

@@ -13,7 +13,7 @@ import { AuthProvider } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
-// Pages
+// Pages - Ensure these folder/file names match your folders EXACTLY (Case-Sensitive)
 import Home from "./pages/Home/home";
 import Detail from "./pages/Detail/detail";
 import About from "./pages/About/about";
@@ -21,10 +21,18 @@ import OrderPage from "./pages/Order/orderPage";
 import FAQ from "./pages/Faq/faqPage";
 import RatingPage from "./pages/Home/rating";
 
+/**
+ * LayoutWrapper handles the logic for showing/hiding Navbar and Footer
+ * based on the current URL path.
+ */
 function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const path = location.pathname;
+
+  // Define pages where Navbar/Footer should be hidden
   const isAuthPage = path === "/login" || path === "/register";
+
+  // Define pages where we want 0 padding-top (usually for Hero sections)
   const isHeroPage =
     ["/", "/about", "/faq", "/order"].includes(path) ||
     path.startsWith("/detail/");
@@ -53,6 +61,8 @@ export default function App() {
               <Route path="/order" element={<OrderPage />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/rating" element={<RatingPage />} />
+
+              {/* Redirect any unknown routes to Home */}
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </LayoutWrapper>

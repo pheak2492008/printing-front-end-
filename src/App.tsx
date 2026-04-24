@@ -21,14 +21,18 @@ import OrderPage from "./pages/Order/orderPage";
 import FAQ from "./pages/Faq/faqPage";
 import RatingPage from "./pages/Home/rating";
 
+/**
+ * LayoutWrapper handles the visibility of Navbar/Footer
+ * and adjusts page padding based on the current route.
+ */
 function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const path = location.pathname;
 
-  // 1. Hide Navbar/Footer for Login/Register (assuming paths are /login or /register)
+  // 1. Hide Navbar/Footer for Login/Register pages
   const isAuthPage = path === "/login" || path === "/register";
 
-  // 2. Pages with Hero sections that need to touch the top (pt-0)
+  // 2. Hero pages should have 0 padding-top so the background/image hits the Navbar
   const isHeroPage =
     path === "/" ||
     path === "/about" ||
@@ -38,14 +42,12 @@ function LayoutWrapper({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#f8f9f8]">
-      {/* Show Navbar unless on an Auth page */}
       {!isAuthPage && <Navbar />}
 
       <main className={`w-full ${isAuthPage || isHeroPage ? "pt-0" : "pt-20"}`}>
         {children}
       </main>
 
-      {/* Show Footer unless on an Auth page */}
       {!isAuthPage && <Footer />}
     </div>
   );
@@ -65,7 +67,7 @@ export default function App() {
               <Route path="/faq" element={<FAQ />} />
               <Route path="/rating" element={<RatingPage />} />
 
-              {/* Redirect any unknown routes to Home */}
+              {/* Catch-all: Redirect unknown routes back to Home */}
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </LayoutWrapper>

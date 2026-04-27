@@ -5,7 +5,6 @@ import {
   Navigate,
   useLocation,
 } from "react-router-dom";
-import React from "react";
 import { LanguageProvider } from "./context/LanguageContext";
 import { AuthProvider } from "./context/AuthContext";
 
@@ -14,6 +13,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
 // Pages
+
 import Home from "./pages/Home/home";
 import Detail from "./pages/Detail/detail";
 import About from "./pages/About/about";
@@ -24,17 +24,32 @@ import RatingPage from "./pages/Home/rating";
 function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const path = location.pathname;
+
+  // 1. Only hide Navbar/Footer for Login/Register
   const isAuthPage = path === "/login" || path === "/register";
+
+  // 2. These pages have a Hero image that should touch the Navbar (No white gap)
   const isHeroPage =
-    ["/", "/about", "/faq", "/order"].includes(path) ||
-    path.startsWith("/detail/");
+    path === "/" ||
+    path === "/about" ||
+    path.startsWith("/detail/") ||
+    path === "/faq" ||
+    path === "/order";
 
   return (
     <div className="flex flex-col min-h-screen bg-[#f8f9f8]">
+      {/* Navbar will now show on Home, About, Detail, FAQ, and Order */}
       {!isAuthPage && <Navbar />}
-      <main className={`w-full ${isAuthPage || isHeroPage ? "pt-0" : "pt-20"}`}>
+
+      {/* - If it's a Hero page (Home/About), use 'pt-0' so they touch the Navbar.
+          - If it's a standard page (Order/FAQ/Detail), use 'pt-20' so the Navbar doesn't cover text.
+      */}
+      <main
+        className={`${isAuthPage || isHeroPage ? "w-full pt-0" : "w-full pt-20"}`}
+      >
         {children}
       </main>
+
       {!isAuthPage && <Footer />}
     </div>
   );
@@ -53,6 +68,7 @@ export default function App() {
               <Route path="/order" element={<OrderPage />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/rating" element={<RatingPage />} />
+
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
           </LayoutWrapper>

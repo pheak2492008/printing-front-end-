@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../../context/LanguageContext";
-import { ChevronLeft, Star, CheckCircle2 } from "lucide-react";
+import { Star, CheckCircle2 } from "lucide-react";
+
+/* 1. CONFIGURATION - Added ENV Support */
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8081";
 
 export default function RatingPage() {
   const { lang } = useLanguage();
@@ -16,7 +19,7 @@ export default function RatingPage() {
       write: "សរសេរមតិយោបល់",
       submit: "បញ្ជូនមតិ",
       placeholder: "ចែករំលែកបទពិសោធន៍របស់អ្នក...",
-      back: "ត្រឡប់ក្រោយ", // Matches
+      back: "ត្រឡប់ក្រោយ",
       seeAll: "ការវាយតម្លៃទាំងអស់",
       verified: "អតិថិជនជឿជាក់",
     },
@@ -32,8 +35,9 @@ export default function RatingPage() {
     },
   }[lang as "km" | "en"] || { title: "Reviews", back: "Back" };
 
+  /* 2. UPDATED FETCH WITH API_BASE_URL */
   const loadReviews = () => {
-    fetch("http://localhost:8081/api/v1/reviews/all")
+    fetch(`${API_BASE_URL}/api/v1/reviews/all`)
       .then((res) => res.json())
       .then((data) => setReviews([...data].reverse()))
       .catch((err) => console.error("Failed to load reviews", err));
@@ -43,9 +47,10 @@ export default function RatingPage() {
     loadReviews();
   }, []);
 
+  /* 3. UPDATED POST WITH API_BASE_URL */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await fetch("http://localhost:8081/api/v1/reviews/add", {
+    const res = await fetch(`${API_BASE_URL}/api/v1/reviews/add`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...form, productId: 1 }),
@@ -58,7 +63,7 @@ export default function RatingPage() {
 
   return (
     <div className="bg-[#f8fafc] min-h-screen font-sans">
-      {/* 2. Hero Section - Deep Slate Blue closer to navbar */}
+      {/* Hero Section */}
       <section className="bg-[#0f172a] text-white py-20 px-6 text-center shadow-inner">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-6xl font-black mb-6 leading-tight tracking-tight">
@@ -98,7 +103,7 @@ export default function RatingPage() {
               ))}
             </div>
             <textarea
-              className="w-full p-6 bg-slate-50 rounded-[24px] h-40 outline-none focus:ring-4 focus:ring-blue-50 focus:border-blue-200 border-2 border-transparent transition-all text-lg resize-none"
+              className="w-full p-6 bg-slate-50 rounded-3xl h-40 outline-none focus:ring-4 focus:ring-blue-50 focus:border-blue-200 border-2 border-transparent transition-all text-lg resize-none"
               placeholder={tx.placeholder}
               value={form.comment}
               required
@@ -125,7 +130,7 @@ export default function RatingPage() {
           {reviews.slice(0, 6).map((r, i) => (
             <div
               key={i}
-              className="flex gap-6 p-8 bg-white rounded-[32px] border border-slate-100 shadow-sm hover:shadow-md transition-all"
+              className="flex gap-6 p-8 bg-white rounded-4xl border border-slate-100 shadow-sm hover:shadow-md transition-all"
             >
               <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center font-black text-2xl shrink-0">
                 {r.comment?.charAt(0).toUpperCase() || "U"}
@@ -147,7 +152,7 @@ export default function RatingPage() {
                     </span>
                   </div>
                 </div>
-                <p className="text-slate-600 leading-relaxed text-lg italic italic">
+                <p className="text-slate-600 leading-relaxed text-lg italic">
                   "{r.comment}"
                 </p>
               </div>

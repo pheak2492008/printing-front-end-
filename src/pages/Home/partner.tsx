@@ -83,7 +83,7 @@ export default function Partner() {
 
   return (
     <section className="bg-white py-16 overflow-hidden">
-      <div className="max-w-[1280px] mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6">
         {/* ── Header ── */}
         <div className="text-center mb-12">
           <span className="inline-block px-4 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-widest mb-3">

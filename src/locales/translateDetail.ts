@@ -11,7 +11,7 @@ export const t = {
       addToCart: "បន្ថែមទៅក្នុងកន្ត្រក",
     },
     products: {
-      "1": {
+      "18": {
         title: "បដា Standard Flex",
         sub: "បដាផ្សព្វផ្សាយពាណិជ្ជកម្ម",
         desc: "បដា Standard Flex គឺជាជម្រើសដ៏ល្អសម្រាប់ការផ្សព្វផ្សាយដែលមានប្រសិទ្ធភាព និងតម្លៃសមរម្យ។ ផលិតពី PVC 380g ដែលមានភាពស្វិតខ្លាំង និងមានផ្ទៃម៉ត់កាត់បន្ថយចំណាំងផ្លាតពីពន្លឺថ្ងៃ។ សាកសមបំផុតសម្រាប់កម្មវិធីខួបកំណើត ឬស្លាកសញ្ញាហាងទូទៅ។",
@@ -22,7 +22,7 @@ export const t = {
           "ការប្រើប្រាស់: ក្នុង និងក្រៅផ្ទះ",
         ],
       },
-      "2": {
+      "19": {
         title: "បដា UV High Gloss",
         sub: "បដាគុណភាពខ្ពស់ពិសេស",
         desc: "លើកកម្ពស់ម៉ាកយីហោរបស់អ្នកជាមួយបដា UV High Gloss ដែលរចនាឡើងសម្រាប់ភាពទាក់ទាញបំផុត។ ប្រើប្រាស់បច្ចេកវិទ្យាទឹកថ្នាំ UV ការពារការហើរពណ៌ទោះត្រូវកម្ដៅថ្ងៃខ្លាំង។ ផ្ទៃរលោងចែងចាំងធ្វើឱ្យពណ៌ដិតច្បាស់ល្អឥតខ្ចោះ។",
@@ -33,7 +33,7 @@ export const t = {
           "ភាពធន់: កម្រិតខ្ពស់",
         ],
       },
-      "3": {
+      "20": {
         title: "បដាសំណាញ់ Mesh",
         sub: "បដាធន់នឹងខ្យល់បក់",
         desc: "រចនាឡើងជាពិសេសសម្រាប់តំបន់ដែលមានខ្យល់បក់ខ្លាំង។ បដាសំណាញ់មានរន្ធតូចៗដែលអនុញ្ញាតឱ្យខ្យល់ចេញចូលបាន ៣០% ការពារការហែកបដា និងរក្សាលំនឹងរបង។ សាកសមបំផុតសម្រាប់ការដ្ឋានសំណង់ និងកម្មវិធីតន្ត្រីក្រៅផ្ទះ។",
@@ -44,7 +44,7 @@ export const t = {
           "គុណភាព: បោះពុម្ពច្បាស់ (HD)",
         ],
       },
-      "4": {
+      "21": {
         title: "ស្ទីគ័រ Vinyl Die-Cut",
         sub: "ស្ទីគ័រកាត់តាមរាង",
         desc: "នាំយកស្នាដៃសិល្បៈរបស់អ្នកមកបង្ហាញជាមួយស្ទីគ័រ Vinyl Die-Cut។ ស្ទីគ័រនីមួយៗត្រូវបានកាត់តាមរាងរចនាប័ទ្មរបស់អ្នកយ៉ាងជាក់លាក់។ ធន់នឹងការឆ្កូត មិនជ្រាបទឹក និងអាចលាងសម្អាតបាន សាកសមសម្រាប់បិទលើកុំព្យូទ័រ ឬដបទឹក។",
@@ -55,7 +55,7 @@ export const t = {
           "ភាពធន់: ធន់នឹងការឆ្កូត",
         ],
       },
-      "5": {
+      "22": {
         title: "ស្ទីគ័រឥន្ទធនូ Holographic",
         sub: "ស្ទីគ័រម៉ូតពិសេស",
         desc: "បន្ថែមភាពទាក់ទាញបែបសម័យថ្មីជាមួយស្ទីគ័រឥន្ទធនូ។ វាជះពន្លឺពណ៌ឥន្ទធនូតាមមុំផ្សេងៗគ្នាដែលប៉ះនឹងពន្លឺ។ មានស្រទាប់ការពារទឹក និងកម្ដៅថ្ងៃ ផ្ដល់នូវសោភ័ណភាពទំនើបសម្រាប់ម៉ាកផលិតផលរបស់អ្នក។",
@@ -66,7 +66,7 @@ export const t = {
           "សោភ័ណភាព: ផ្លេកៗ (Shiny)",
         ],
       },
-      "6": {
+      "23": {
         title: "ស្ទីគ័រ Bumper Matte",
         sub: "ស្ទីគ័របិទលើរថយន្ត",
         desc: "ផលិតឡើងដើម្បីភាពធន់នៅតាមដងផ្លូវ។ ស្ទីគ័រនេះប្រើប្រាស់ស្រទាប់ការពារម៉ត់ (Matte) ដែលកាត់បន្ថយចំណាំងផ្លាត។ កាវជាប់បានល្អទោះលាងឡានច្រើនដង ប៉ុន្តែអាចបកចេញវិញបានដោយមិនខូចថ្នាំឡាន ឬសល់ស្នាមកាវ។",
@@ -77,7 +77,7 @@ export const t = {
           "ភាពធន់: កម្រិតខ្ពស់",
         ],
       },
-      "7": {
+      "24": {
         title: "ឡូហ្គោស្ទីគ័ររង្វង់",
         sub: "ឡូហ្គោវេចខ្ចប់",
         desc: "សម្រួលការវេចខ្ចប់របស់អ្នកជាមួយស្ទីគ័រឡូហ្គោរង្វង់។ ងាយស្រួលបកបិទលើកែវកាហ្វេ ថង់យួរ ឬប្រអប់ផលិតផលផ្សេងៗ។ ផ្ទៃពាក់កណ្តាលរលោងផ្ដល់នូវរូបរាងអាជីពសម្រាប់ការវេចខ្ចប់ផលិតផលរបស់អ្នក។",
@@ -88,7 +88,7 @@ export const t = {
           "ប្រើប្រាស់: បិទលើកញ្ចប់ទំនិញ",
         ],
       },
-      "8": {
+      "25": {
         title: "ឡូហ្គោស្ទីគ័រថ្លា",
         sub: "ស្ទីគ័រគ្មានផ្ទៃខាងក្រោយ",
         desc: "ផ្ដល់នូវសោភ័ណភាពដូចការបោះពុម្ពផ្ទាល់លើសម្ភារៈ។ បោះពុម្ពលើផ្លាស្ទិចថ្លាដែលអនុញ្ញាតឱ្យឃើញពណ៌ផលិតផលខាងក្នុង។ ប្រើប្រាស់ទឹកថ្នាំពណ៌សច្បាស់ល្អ ទោះបិទលើដបកែវពណ៌ដិតក៏ដោយ។",
@@ -99,7 +99,7 @@ export const t = {
           "ប្រើប្រាស់: ដបកែវ និងបង្អួច",
         ],
       },
-      "9": {
+      "26": {
         title: "ឡូហ្គោស្ទីគ័រទឹកមាស",
         sub: "ឡូហ្គោលំដាប់ខ្ពស់",
         desc: "គ្មានអ្វីដែលបង្ហាញពីភាពថ្លៃថ្នូរជាងឡូហ្គោទឹកមាសនោះទេ។ ប្រើប្រាស់បច្ចេកវិទ្យា Hot-stamping ផ្ដល់នូវពន្លឺលោហធាតុពិតៗ។ ជាជម្រើសដ៏ល្អបំផុតសម្រាប់ទៀនក្រអូបលំដាប់ខ្ពស់ និងធៀបការផ្សេងៗ។",
@@ -124,7 +124,7 @@ export const t = {
       addToCart: "Add to Cart",
     },
     products: {
-      "1": {
+      "18": {
         title: "Standard Flex Banner",
         sub: "PVC Advertising Banner",
         desc: "The industry benchmark for affordable, high-impact advertising. Crafted from high-tenacity 380g PVC, it features a smooth matte surface that eliminates glare from camera flashes or sunlight.",
@@ -135,7 +135,7 @@ export const t = {
           "Use: Indoor/Outdoor",
         ],
       },
-      "2": {
+      "19": {
         title: "UV High Gloss Banner",
         sub: "Premium Outdoor Display",
         desc: "Engineered for maximum visual brilliance. Utilizing advanced UV-cured ink technology, this banner is immune to fading under harsh sun with a mirror-like depth.",
@@ -146,7 +146,7 @@ export const t = {
           "Durability: High Performance",
         ],
       },
-      "3": {
+      "20": {
         title: "Mesh Fence Banner",
         sub: "Wind-Resistant Signage",
         desc: "Designed specifically for high-wind environments. Perforated fabric allows 30% airflow, preventing the 'sail effect' on fences or scaffolding.",
@@ -157,7 +157,7 @@ export const t = {
           "Quality: HD Printing",
         ],
       },
-      "4": {
+      "21": {
         title: "Die-Cut Vinyl Stickers",
         sub: "Custom Shape Stickers",
         desc: "Precision cut exactly to the shape of your design. Thick, scratch-resistant vinyl that is 100% waterproof and dishwasher safe.",
@@ -168,7 +168,7 @@ export const t = {
           "Durability: Scratch-resistant",
         ],
       },
-      "5": {
+      "22": {
         title: "Holographic Sparkle Stickers",
         sub: "Iridescent Specialty Stickers",
         desc: "Add a futuristic dimension with a rainbow effect that catches the light. Topped with heavy-duty laminate to protect against moisture and UV rays.",
@@ -179,7 +179,7 @@ export const t = {
           "Look: Shiny/Futuristic",
         ],
       },
-      "6": {
+      "23": {
         title: "Matte Bumper Stickers",
         sub: "Vehicle Branding Stickers",
         desc: "Built to survive the open road. Specialized non-reflective matte laminate prevents sun-glare. Adhesive is strong but removable without damaging paint.",
@@ -190,7 +190,7 @@ export const t = {
           "Durability: Outdoor Rated",
         ],
       },
-      "7": {
+      "24": {
         title: "Circular Business Logos",
         sub: "Packaging & Labeling",
         desc: "Streamline your packaging with easy-peel circular labels. Semi-gloss finish provides a professional touch for bags, boxes, or cups.",
@@ -201,7 +201,7 @@ export const t = {
           "Purpose: Retail Packaging",
         ],
       },
-      "8": {
+      "25": {
         title: "Transparent Clear Logos",
         sub: "No-Label Look Stickers",
         desc: "Achieve a minimalist look on glass or plastic. High-density white ink support ensures your logo is bold even on dark containers.",
@@ -212,7 +212,7 @@ export const t = {
           "Target: Glass/Plastic jars",
         ],
       },
-      "9": {
+      "26": {
         title: "Metallic Gold Foil Logos",
         sub: "Luxury Product Labels",
         desc: "Genuine metallic shine using hot-stamping leaf. Communicates prestige and quality for luxury candles, florists, and wedding stationery.",
@@ -237,7 +237,7 @@ export const t = {
       addToCart: "加入购物车",
     },
     products: {
-      "1": {
+      "18": {
         title: "标准喷绘布",
         sub: "户外广告横幅",
         desc: "经济实惠、影响力大的广告行业基准。由 380g 高强力 PVC 制成，光滑的哑光表面可消除眩光。非常适合临时户外活动或室内零售标牌。",
@@ -248,7 +248,7 @@ export const t = {
           "用途: 室内/室外",
         ],
       },
-      "2": {
+      "19": {
         title: "UV 高亮光横幅",
         sub: "优质展示横幅",
         desc: "UV 高亮光横幅专为卓越视觉效果而设计。采用先进的 UV 固化油墨技术，在酷热的烈日下也能保持颜色鲜艳不褪色。",
@@ -259,7 +259,7 @@ export const t = {
           "耐用性: 长期户外",
         ],
       },
-      "3": {
+      "20": {
         title: "网格围栏横幅",
         sub: "防风型横幅",
         desc: "专为高风力环境设计。微孔穿孔材料允许 30% 的气流通过，有效防止风阻产生的“帆效应”，确保围栏稳固。",
@@ -270,7 +270,7 @@ export const t = {
           "印刷: 高清画质",
         ],
       },
-      "4": {
+      "21": {
         title: "模切乙烯基贴纸",
         sub: "异形定制贴纸",
         desc: "通过我们的精密模切技术让您的设计栩栩如生。每个贴纸都根据您的形状精确切割。加厚耐磨乙烯基制成，100% 防水。",
@@ -281,7 +281,7 @@ export const t = {
           "用途: 电脑/水壶贴",
         ],
       },
-      "5": {
+      "22": {
         title: "镭射全息贴纸",
         sub: "特效彩虹贴纸",
         desc: "为您的品牌增添未来感。采用彩虹变色基材印刷，随着光线角度的变化呈现出绚丽的光泽。表面覆有重型保护膜。",
@@ -292,7 +292,7 @@ export const t = {
           "外观: 闪亮夺目",
         ],
       },
-      "6": {
+      "23": {
         title: "哑光车身贴纸",
         sub: "耐候性车辆贴纸",
         desc: "专为户外行车环境打造。采用特殊的非反射哑光覆膜，防止阳光刺眼。粘性强且移除不留残胶，不伤车漆。",
@@ -303,7 +303,7 @@ export const t = {
           "耐用性: 户外级",
         ],
       },
-      "7": {
+      "24": {
         title: "圆形商业标志贴",
         sub: "包装封口标签",
         desc: "简化您的包装流程。提供易撕贴纸页，非常适合大批量使用，如密封咖啡杯、糕点盒或精品购物袋。",
@@ -314,7 +314,7 @@ export const t = {
           "用途: 零售/包装",
         ],
       },
-      "8": {
+      "25": {
         title: "透明标志贴纸",
         sub: "透明无痕标签",
         desc: "实现“无标签”的简约视觉效果。采用透明聚酯基材，透出产品原色。配合白墨技术，在深色玻璃瓶上依然醒目。",
@@ -325,7 +325,7 @@ export const t = {
           "应用: 化妆品/食品瓶",
         ],
       },
-      "9": {
+      "26": {
         title: "烫金金属标志贴",
         sub: "奢华金箔标签",
         desc: "真实的金属光泽传递尊贵感。采用烫金工艺，产生标准打印无法实现的反射光泽。是奢侈品牌和高端用品的首选。",

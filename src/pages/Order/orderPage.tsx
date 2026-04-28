@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useLanguage } from "../../context/LanguageContext";
 import { TRANSLATIONS, type OrderState } from "../../components/orderTypes";
 import OrderForm from "../../components/OrderForm";
@@ -66,7 +66,7 @@ export default function OrderPage() {
 
   return (
     <div className="bg-[#fcfcfb] min-h-screen pb-20 pt-10 px-4 md:px-10">
-      <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10">
+      <div className="max-w-360 mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10">
         <OrderForm
           tx={tx as typeof TRANSLATIONS.en}
           state={state}

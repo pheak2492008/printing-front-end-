@@ -5,7 +5,7 @@ import Partner from "./partner";
 import Reviews from "./reviwe";
 
 /* 1. CONFIGURATION */
-const API_BASE_URL = "http://localhost:8081";
+const API_BASE_URL = "http://localhost:8082";
 const categoryIdMap = [1, 2, 3];
 
 /* 2. TRANSLATIONS */

@@ -33,7 +33,7 @@ export default function RatingPage() {
   }[lang as "km" | "en"] || { title: "Reviews", back: "Back" };
 
   const loadReviews = () => {
-    fetch("http://localhost:8081/api/v1/reviews/all")
+    fetch("http://localhost:8082/api/v1/reviews/all")
       .then((res) => res.json())
       .then((data) => setReviews([...data].reverse()))
       .catch((err) => console.error("Failed to load reviews", err));
@@ -45,7 +45,7 @@ export default function RatingPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await fetch("http://localhost:8081/api/v1/reviews/add", {
+    const res = await fetch("http://localhost:8082/api/v1/reviews/add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ...form, productId: 1 }),

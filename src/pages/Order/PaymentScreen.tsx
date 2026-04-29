@@ -34,7 +34,7 @@ export default function PaymentScreen({ total, state, onBack, onDone }: any) {
     try {
       // ✅ FIX: Added /v1 to the URL to match your Spring Boot logs
       const response = await fetch(
-        "http://localhost:8081/api/v1/orders/create",
+        "http://localhost:8082/api/v1/orders/create",
         {
           method: "POST",
           body: formData,

@@ -11,7 +11,7 @@ import {
 import { useLanguage } from "../../context/LanguageContext";
 import { t as translationData } from "../../locales/translateDetail";
 
-const API_BASE_URL = "http://localhost:8081";
+const API_BASE_URL = "http://localhost:8082";
 
 export default function BannerDetailPage() {
   const { id } = useParams<{ id: string }>();

@@ -2,9 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../../context/LanguageContext";
 
-/* 1. CONFIGURATION - Use your ENV variable here */
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8081";
-
 export default function HomeReviews() {
   const { lang } = useLanguage();
   const navigate = useNavigate();
@@ -12,14 +9,14 @@ export default function HomeReviews() {
   const [stats, setStats] = useState({ averageRating: 0, totalReviews: 0 });
 
   useEffect(() => {
-    // 2. UPDATED: Fetch using API_BASE_URL
-    fetch(`${API_BASE_URL}/api/v1/reviews/summary`)
+    // Fetch summary data for the stats display
+    fetch("https://printing-back-end.onrender.com/api/v1/reviews/summary")
       .then((res) => res.json())
       .then(setStats)
       .catch((err) => console.error("Stats fetch failed", err));
 
-    // 3. UPDATED: Fetch using API_BASE_URL
-    fetch(`${API_BASE_URL}/api/v1/reviews/all`)
+    // Fetch all reviews
+    fetch("https://printing-back-end.onrender.com/api/v1/reviews/all")
       .then((res) => res.json())
       .then(setReviews)
       .catch((err) => console.error("Reviews fetch failed", err));
@@ -27,7 +24,7 @@ export default function HomeReviews() {
 
   const tx = {
     km: {
-      heroTitle: "សំឡេងរបស់អតិថិជនយើង",
+      heroTitle: "សំឡេងរបស់អតិថិជនយើង", //
       heroDesc: "មតិកែលម្អរបស់អ្នកជួយយើងឱ្យកាន់តែប្រសើរឡើង។",
       avg: "ការវាយតម្លៃមធ្យម",
       total: "មតិសរុប",
@@ -57,7 +54,7 @@ export default function HomeReviews() {
 
   return (
     <section className="bg-white">
-      {/* Hero Section */}
+      {/* 1. Hero Section with Dark Background */}
       <section className="bg-[#0f172a] text-white py-24 px-6 text-center">
         <h1 className="text-4xl md:text-6xl font-black mb-6">{tx.heroTitle}</h1>
         <p className="text-slate-400 max-w-2xl mx-auto text-lg leading-relaxed">
@@ -65,7 +62,7 @@ export default function HomeReviews() {
         </p>
         <div className="text-center mt-12">
           <button
-            onClick={() => navigate("/rating")}
+            onClick={() => navigate("/rating")} // Navigates to the page in your screenshot
             className="bg-red-600 text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-blue-600 transition-all shadow-lg active:scale-95"
           >
             {tx.btn}
@@ -74,7 +71,7 @@ export default function HomeReviews() {
       </section>
 
       <div className="py-16 px-6">
-        {/* Stats Row Summary */}
+        {/* 2. Stats Row Summary */}
         <div className="flex justify-center gap-12 mb-16 text-center">
           <div>
             <h2 className="text-5xl font-black text-slate-900">
@@ -95,12 +92,12 @@ export default function HomeReviews() {
           </div>
         </div>
 
-        {/* 6 Cards Grid Only */}
+        {/* 3. 6 Cards Grid Only */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
           {reviews.slice(0, 6).map((r, i) => (
             <div
               key={i}
-              className="p-8 bg-gray-50 rounded-4xl border border-gray-100 hover:shadow-sm transition-shadow"
+              className="p-8 bg-gray-50 rounded-[32px] border border-gray-100 hover:shadow-sm transition-shadow"
             >
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">

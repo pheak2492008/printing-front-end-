@@ -11,8 +11,7 @@ import {
 import { useLanguage } from "../../context/LanguageContext";
 import { t as translationData } from "../../locales/translateDetail";
 
-/* 1. CONFIGURATION - Switched to ENV variable with fallback */
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8081";
+const API_BASE_URL = "http://localhost:8081";
 
 export default function BannerDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -22,13 +21,13 @@ export default function BannerDetailPage() {
   const [loading, setLoading] = useState(true);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
+  // Type-safe translation access
   const tx = (translationData[lang as keyof typeof translationData] ||
     translationData.en) as any;
 
   useEffect(() => {
     const fetchDetail = async () => {
       try {
-        // 2. UPDATED: Fetching from ENV base URL
         const response = await fetch(
           `${API_BASE_URL}/api/v1/product-details/${id}`,
         );
@@ -37,7 +36,7 @@ export default function BannerDetailPage() {
           setProduct(data);
         }
       } catch (err) {
-        console.error("Fetch error:", err);
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -62,16 +61,13 @@ export default function BannerDetailPage() {
       </div>
     );
 
+  // Match ID from translateDetail.ts
   const productOverride = tx.products?.[id as string];
 
   const displayTitle = productOverride?.title || product?.name;
   const displaySub = productOverride?.sub || product?.title;
   const displayDesc = productOverride?.desc || product?.description;
-
-  // 3. UPDATED: Ensure image URL also uses the ENV base URL
-  const productImage = product.imageUrl?.startsWith("http")
-    ? product.imageUrl
-    : `${API_BASE_URL}${product.imageUrl}`;
+  const productImage = `${API_BASE_URL}${product.imageUrl}`;
 
   return (
     <div className="min-h-screen bg-white">
@@ -85,12 +81,13 @@ export default function BannerDetailPage() {
         </button>
       </div>
 
+      {/* Main Grid: max-w-6xl narrows the page correctly */}
       <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16 pb-24 items-start">
         {/* Left: Clickable Product Image */}
         <div className="relative group max-w-sm mx-auto md:max-w-none w-full">
           <div
             onClick={() => setIsImageModalOpen(true)}
-            className="rounded-[40px] overflow-hidden shadow-2xl border-4 border-gray-50 bg-gray-50 aspect-4/5 flex items-center justify-center cursor-zoom-in group transition-all duration-300 hover:shadow-blue-100"
+            className="rounded-[40px] overflow-hidden shadow-2xl border-4 border-gray-50 bg-gray-50 aspect-[4/5] flex items-center justify-center cursor-zoom-in group transition-all duration-300 hover:shadow-blue-100"
           >
             <img
               src={productImage}
@@ -125,6 +122,7 @@ export default function BannerDetailPage() {
             </span>
           </div>
 
+          {/* Description Section */}
           <div className="border-t pt-8">
             <h3
               className={`text-xl font-bold mb-4 ${lang === "km" ? "font-km" : ""}`}
@@ -138,6 +136,7 @@ export default function BannerDetailPage() {
             </p>
           </div>
 
+          {/* New Specifications Grid */}
           <div className="mt-10">
             <h3
               className={`text-lg font-bold mb-5 ${lang === "km" ? "font-km" : ""}`}
@@ -160,7 +159,6 @@ export default function BannerDetailPage() {
               ))}
             </div>
           </div>
-
           <Link to="/order" className="self-stretch md:self-auto">
             <button className="mt-12 w-full bg-blue-600 text-white px-10 py-5 rounded-2xl font-bold flex items-center justify-center gap-4 active:scale-95 transition-all shadow-xl shadow-blue-100 hover:bg-blue-700">
               <ShoppingCart size={24} />
@@ -172,10 +170,10 @@ export default function BannerDetailPage() {
         </div>
       </div>
 
-      {/* Modal Portal */}
+      {/* Fullscreen Modal Portal */}
       {isImageModalOpen && (
         <div
-          className="fixed inset-0 bg-black/95 z-1000 flex items-center justify-center p-4 cursor-zoom-out animate-in fade-in duration-300"
+          className="fixed inset-0 bg-black/95 z-[1000] flex items-center justify-center p-4 cursor-zoom-out animate-in fade-in duration-300"
           onClick={() => setIsImageModalOpen(false)}
         >
           <button className="absolute top-6 right-6 p-3 bg-white/10 rounded-full text-white hover:bg-white/20">
@@ -184,7 +182,7 @@ export default function BannerDetailPage() {
           <img
             src={productImage}
             className="max-w-full max-h-full rounded-xl shadow-2xl animate-in zoom-in duration-300"
-            alt="Full Preview"
+            alt="Full"
           />
         </div>
       )}
